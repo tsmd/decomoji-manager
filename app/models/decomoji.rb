@@ -1,0 +1,2 @@
+class Decomoji < ApplicationRecord
+end

@@ -1,0 +1,11 @@
+<h1>Decomojis</h1>
+
+<ul>
+    <% @decomojis.each do |decomoji| %>
+        <li>
+            <a href="/decomojis/<%= decomoji.id %>">
+                <%= decomoji.name %>
+            </a>
+        </li>
+    <% end %>
+</ul>

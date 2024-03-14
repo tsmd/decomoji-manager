@@ -1,0 +1,2 @@
+module DecomojisHelper
+end
