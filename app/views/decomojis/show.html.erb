@@ -1,3 +1,13 @@
 <h1><%= @decomoji.name %> (<%= @decomoji.version.name %>)</h1>
 
 <p><%= @decomoji.yomi %></p>
+
+<ul>
+  <li><%= link_to 'Edit', edit_decomoji_path(@decomoji) %></li>
+  <li>
+    <%= link_to 'Delete', decomoji_path(@decomoji), data: {
+      turbo_method: :delete,
+      turbo_confirm: "Are you sure?"
+    } %>
+  </li>
+</ul>
