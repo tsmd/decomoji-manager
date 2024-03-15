@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   root "decomojis#index"
 
   #get "/decomojis/:id", to: "decomojis#show"
-  resources :decomojis, except: [:index]
+  resources :decomojis, except: [:index] do
+    resources :aliases
+  end
+
   get "/decomojis", to: redirect("/")
 end

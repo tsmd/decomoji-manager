@@ -11,3 +11,19 @@
     } %>
   </li>
 </ul>
+
+<hr>
+
+<h2>Aliases</h2>
+<ul>
+  <% @decomoji.aliases.each do |decomoji_alias| %>
+    <li>
+      <%= decomoji_alias.name %>
+      -
+      <%= link_to 'Delete', decomoji_alias_path(@decomoji, decomoji_alias), data: {
+        turbo_method: :delete,
+      } %>
+    </li>
+  <% end %>
+</ul>
+<%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>

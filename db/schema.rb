@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_085220) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_15_142838) do
+  create_table "aliases", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "decomoji_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decomoji_id"], name: "index_aliases_on_decomoji_id"
+  end
+
   create_table "decomojis", force: :cascade do |t|
     t.string "name", null: false
     t.string "yomi", null: false
@@ -28,5 +36,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_085220) do
     t.index ["name"], name: "index_versions_on_name", unique: true
   end
 
+  add_foreign_key "aliases", "decomojis"
   add_foreign_key "decomojis", "versions"
 end

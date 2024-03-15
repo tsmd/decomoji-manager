@@ -1,0 +1,13 @@
+<%= form_with model: [ decomoji, decomoji_alias ] do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <% decomoji_alias.errors.full_messages_for(:name).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.submit 'Add Alias' %>
+  </p>
+<% end %>
