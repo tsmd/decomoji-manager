@@ -8,5 +8,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "decomojis#index"
 
-  get "/decomojis/:id", to: "decomojis#show"
+  #get "/decomojis/:id", to: "decomojis#show"
+  resources :decomojis, except: [:index]
+  get "/decomojis", to: redirect("/")
 end

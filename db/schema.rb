@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_14_164954) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_15_085220) do
   create_table "decomojis", force: :cascade do |t|
-    t.string "name"
-    t.string "yomi"
+    t.string "name", null: false
+    t.string "yomi", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "version_id"
+    t.index ["name"], name: "index_decomojis_on_name", unique: true
+    t.index ["version_id"], name: "index_decomojis_on_version_id"
   end
 
+  create_table "versions", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_versions_on_name", unique: true
+  end
+
+  add_foreign_key "decomojis", "versions"
 end

@@ -1,0 +1,33 @@
+<h1>Add Decomoji</h1>
+
+<% if @decomoji.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@decomoji.errors.count, "error") %> prohibited this decomoji from being saved:</h2>
+    <ul>
+    <% @decomoji.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @decomoji do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :yomi %><br>
+    <%= f.text_field :yomi %>
+  </p>
+
+  <p>
+    <%= f.label :version_id, "Version" %><br>
+    <%= f.collection_radio_buttons :version_id, Version.all, :id, :name %>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
