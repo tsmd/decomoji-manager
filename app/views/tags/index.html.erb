@@ -1,0 +1,27 @@
+<h2>Tags</h2>
+
+<%= form_with model: @new_tag, local: true do |form| %>
+  <p>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.submit 'Add Tag' %>
+  </p>
+<% end %>
+  
+<ul>
+  <% @tags.each do |tag| %>
+    <li>
+      <turbo-frame id="tag_<%= tag.id %>">
+        <%= tag.name %>
+        <%= link_to 'Edit', edit_tag_path(tag) %>
+        <%= link_to 'Delete', tag, data: {
+          turbo_frame: '_top',
+          turbo_method: :delete,
+          turbo_confirm: 'Are you sure?',
+        } %>
+      </turbo-frame>
+    </li>
+  <% end %>
+</ul>

@@ -13,6 +13,10 @@
   <body>
     <header>
       <h1><%= link_to "Decomoji Manager", root_path %></h1>
+      <ul>
+        <li><%= link_to "Decomojis", root_path %></li>
+        <li><%= link_to "Tags", tags_path %></li>
+      </ul>
       <hr>
     </header>
     <%= yield %>

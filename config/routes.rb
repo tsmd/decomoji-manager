@@ -10,8 +10,15 @@ Rails.application.routes.draw do
 
   #get "/decomojis/:id", to: "decomojis#show"
   resources :decomojis, except: [:index] do
-    resources :aliases
+    resources :aliases, only: [:create, :destroy]
+
+    member do
+      post 'add_tag'
+      delete 'remove_tag/:tag_id', to: 'decomojis#remove_tag', as: 'remove_tag'
+    end
   end
+
+  resources :tags, except: [:new, :show]
 
   get "/decomojis", to: redirect("/")
 end

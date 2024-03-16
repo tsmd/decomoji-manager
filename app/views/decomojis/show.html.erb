@@ -27,3 +27,35 @@
   <% end %>
 </ul>
 <%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
+
+<hr>
+
+<h3>Tags</h3>
+<ul>
+  <% @decomoji.tags.each do |tag| %>
+    <li>
+      <%= tag.name %>
+      -
+      <%= link_to 'Delete', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), data: {
+        turbo_method: :delete,
+      } %>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with url: add_tag_decomoji_path(@decomoji), method: :post do |form| %>
+  <p>
+    <%= form.label :tag_name %><br>
+    <%= text_field_tag :tag_name, nil, list: 'tag-list' %>
+  </p>
+
+  <datalist id="tag-list">
+    <% @all_tags.each do |tag| %>
+      <option value="<%= tag.name %>">
+    <% end %>
+  </datalist>
+
+  <p>
+    <%= form.submit 'Add Tag' %>
+  </p>
+<% end %>

@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_142838) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_16_155125) do
   create_table "aliases", force: :cascade do |t|
     t.string "name", null: false
     t.integer "decomoji_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["decomoji_id"], name: "index_aliases_on_decomoji_id"
+  end
+
+  create_table "decomoji_tags", force: :cascade do |t|
+    t.integer "decomoji_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decomoji_id"], name: "index_decomoji_tags_on_decomoji_id"
+    t.index ["tag_id"], name: "index_decomoji_tags_on_tag_id"
   end
 
   create_table "decomojis", force: :cascade do |t|
@@ -29,6 +38,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_142838) do
     t.index ["version_id"], name: "index_decomojis_on_version_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "versions", force: :cascade do |t|
     t.text "name", null: false
     t.datetime "created_at", null: false
@@ -37,5 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_142838) do
   end
 
   add_foreign_key "aliases", "decomojis"
+  add_foreign_key "decomoji_tags", "decomojis"
+  add_foreign_key "decomoji_tags", "tags"
   add_foreign_key "decomojis", "versions"
 end

@@ -1,5 +1,7 @@
 class Decomoji < ApplicationRecord
   has_many :aliases, dependent: :destroy
+  has_many :decomoji_tags
+  has_many :tags, through: :decomoji_tags
 
   validates :name, presence: true, length: { minimum: 1 }, uniqueness: true
   validate :unique_name_across_models

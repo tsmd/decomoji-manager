@@ -1,0 +1,11 @@
+<h2>Edit Tag</h2>
+
+<%= turbo_frame_tag @tag do %>
+  <%= form_with model: @tag do |form| %>
+    <%= form.text_field :name %>
+    <%= form.submit 'Update' %>
+  <% end %>
+
+  <%= link_to 'Cancel', tags_path %>
+<% end %>
+  

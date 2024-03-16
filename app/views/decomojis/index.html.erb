@@ -3,12 +3,12 @@
 <p><%= link_to 'Add Decomoji', new_decomoji_path %></p>
 
 <ul>
-    <% @decomojis.each do |decomoji| %>
-        <li>
-            <a href="/decomojis/<%= decomoji.id %>">
-                <%= decomoji.name %>
-                (<%= decomoji.version.name %>)
-            </a>
-        </li>
-    <% end %>
+  <% @decomojis.each do |decomoji| %>
+    <li>
+      <a href="/decomojis/<%= decomoji.id %>">
+        <%= decomoji.name %>
+        (<%= decomoji.version.name %>)
+      </a>
+    </li>
+  <% end %>
 </ul>

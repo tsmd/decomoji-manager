@@ -1,0 +1,12 @@
+<h2>Add Tag</h2>
+
+<%= form_with model: @tag do |form| %>
+  <p>
+    <%= form.label :name %>
+    <% @tag.errors.full_messages_for(:name).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+    <%= form.text_field :name %>
+    <%= form.submit 'Add Tag' %>
+  </p>
+<% end %>
