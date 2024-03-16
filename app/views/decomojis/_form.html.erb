@@ -1,6 +1,6 @@
 <% if decomoji.errors.any? %>
   <div id="error_explanation">
-    <h2><%= pluralize(decomoji.errors.count, "error") %> prohibited this decomoji from being saved:</h2>
+    <h3><%= pluralize(decomoji.errors.count, "error") %> prohibited this decomoji from being saved:</h3>
     <ul>
     <% decomoji.errors.full_messages.each do |message| %>
       <li><%= message %></li>
