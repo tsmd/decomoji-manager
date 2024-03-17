@@ -1,6 +1,8 @@
 class DecomojisController < ApplicationController
+  include Pagy::Backend
+
   def index
-    @decomojis = Decomoji.limit(1000)
+    @pagy, @decomojis = pagy(Decomoji.all, items: 250, size: [1, 6, 6, 1])
     @count = Decomoji.count
   end
 

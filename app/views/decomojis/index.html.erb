@@ -1,6 +1,15 @@
-<h2><%= @count %> Decomojis</h2>
+<h2><%= number_with_delimiter @count %> Decomojis</h2>
 
 <p><%= link_to 'Add Decomoji', new_decomoji_path %></p>
+
+<nav aria-label="Pagination">
+  <p>
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </p>
+  <p>
+    <%= pagy_info_with_comma(@pagy) %>
+  </p>
+</nav>
 
 <table>
   <thead>
