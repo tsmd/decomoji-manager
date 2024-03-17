@@ -61,6 +61,6 @@ class DecomojisController < ApplicationController
   private
 
   def decomoji_params
-    params.require(:decomoji).permit(:name, :yomi, :version_id)
+    params.require(:decomoji).permit(:name, :yomi, :image, :version_id)
   end
 end

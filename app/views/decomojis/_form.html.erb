@@ -27,6 +27,14 @@
   </p>
 
   <p>
+    <%= f.label :image %><br>
+    <% decomoji.errors.full_messages_for(:image).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+    <%= f.file_field :image, accept: 'image/png' %>
+  </p>
+
+  <p>
     <%= f.label :version_id, "Version" %><br>
     <% decomoji.errors.full_messages_for(:version).each do |message| %>
       <div><%= message %></div>

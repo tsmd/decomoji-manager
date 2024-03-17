@@ -6,6 +6,9 @@
   <% @decomojis.each do |decomoji| %>
     <li>
       <a href="/decomojis/<%= decomoji.id %>">
+        <% if decomoji.image.attached? %>
+          <%= image_tag decomoji.image, width: 24, height: 24 %>
+        <% end %>
         <%= decomoji.name %>
         (<%= decomoji.version.name %>)
       </a>
