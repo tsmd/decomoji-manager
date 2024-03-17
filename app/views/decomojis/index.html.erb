@@ -1,17 +1,27 @@
-<h2>Decomojis</h2>
+<h2><%= @count %> Decomojis</h2>
 
 <p><%= link_to 'Add Decomoji', new_decomoji_path %></p>
 
-<ul>
-  <% @decomojis.each do |decomoji| %>
-    <li>
-      <a href="/decomojis/<%= decomoji.id %>">
-        <% if decomoji.image.attached? %>
-          <%= image_tag decomoji.image, width: 24, height: 24 %>
-        <% end %>
-        <%= decomoji.name %>
-        (<%= decomoji.version.name %>)
-      </a>
-    </li>
-  <% end %>
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Decomoji</th>
+      <th>Yomi</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @decomojis.each do |decomoji| %>
+      <tr>
+        <td>
+          <%= link_to decomoji do %>
+            <%= image_tag decomoji.image, width: 24, height: 24, loading: 'lazy' %>
+            <%= decomoji.name %>
+          <% end %>
+        </td>
+        <td><%= decomoji.yomi %></td>
+        <td><%= decomoji.version.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

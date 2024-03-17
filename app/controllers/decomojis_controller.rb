@@ -1,6 +1,7 @@
 class DecomojisController < ApplicationController
   def index
-    @decomojis = Decomoji.all
+    @decomojis = Decomoji.limit(1000)
+    @count = Decomoji.count
   end
 
   def show

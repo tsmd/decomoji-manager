@@ -1,15 +1,19 @@
 class Decomoji < ApplicationRecord
-  has_one_attached :image
+  validates :name, presence: true, length: { minimum: 1 }, uniqueness: true
+  validate :unique_name_across_models
+  
+  #validates :yomi, presence: true, length: { minimum: 1 }
+  
+  belongs_to :version
+  
   has_many :aliases, dependent: :destroy
+  
   has_many :decomoji_tags
   has_many :tags, through: :decomoji_tags
 
-  validates :name, presence: true, length: { minimum: 1 }, uniqueness: true
-  validate :unique_name_across_models
-  validates :yomi, presence: true, length: { minimum: 1 }
-  validates :image, presence: true
+  has_one_attached :image
+  #validates :image, presence: true
   validate :validate_image_format
-  belongs_to :version
 
   before_save :replace_image, if: -> { image.attached? && image.changed? }
 
