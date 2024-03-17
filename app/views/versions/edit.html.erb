@@ -1,0 +1,11 @@
+<h2>Edit Version</h2>
+
+<%= turbo_frame_tag @version do %>
+  <%= form_with model: @version do |form| %>
+    <%= form.text_field :name %>
+    <%= form.submit 'Update' %>
+  <% end %>
+
+  <%= link_to 'Cancel', versions_path %>
+<% end %>
+  

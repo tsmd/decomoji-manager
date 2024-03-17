@@ -1,0 +1,30 @@
+<h2>Versions</h2>
+
+<%= form_with model: @new_version, local: true do |form| %>
+  <p>
+    <%= form.label :name %>
+    <% @new_version.errors.full_messages_for(:name).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.submit 'Add Version' %>
+  </p>
+<% end %>
+  
+<ul>
+  <% @versions.each do |version| %>
+    <li>
+      <turbo-frame id="version_<%= version.id %>">
+        <%= version.name %>
+        <%= link_to 'Edit', edit_version_path(version) %>
+        <%= link_to 'Delete', version, data: {
+          turbo_frame: '_top',
+          turbo_method: :delete,
+          turbo_confirm: 'Are you sure?',
+        } %>
+      </turbo-frame>
+    </li>
+  <% end %>
+</ul>

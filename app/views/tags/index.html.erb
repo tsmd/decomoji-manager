@@ -3,6 +3,9 @@
 <%= form_with model: @new_tag, local: true do |form| %>
   <p>
     <%= form.label :name %>
+    <% @new_tag.errors.full_messages_for(:name).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
     <%= form.text_field :name %>
   </p>
   <p>

@@ -17,8 +17,9 @@ Rails.application.routes.draw do
       delete 'remove_tag/:tag_id', to: 'decomojis#remove_tag', as: 'remove_tag'
     end
   end
+  get "/decomojis", to: redirect("/")
 
   resources :tags, except: [:new, :show]
 
-  get "/decomojis", to: redirect("/")
+  resources :versions, except: [:new, :show]
 end

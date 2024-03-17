@@ -39,7 +39,7 @@
     <% decomoji.errors.full_messages_for(:version).each do |message| %>
       <div><%= message %></div>
     <% end %>
-    <%= f.collection_radio_buttons :version_id, Version.all, :id, :name %>
+    <%= f.collection_radio_buttons :version_id, Version.ordered_by_gem_version, :id, :name %>
   </p>
 
   <p>
