@@ -1,11 +1,10 @@
-<h2>Edit Version</h2>
+<h2>バージョンを編集する</h2>
 
 <%= turbo_frame_tag @version do %>
-  <%= form_with model: @version do |form| %>
+  <%= form_with model: @version, html: { style: 'display: inline' } do |form| %>
     <%= form.text_field :name %>
-    <%= form.submit 'Update' %>
+    <%= form.submit '更新' %>
   <% end %>
 
-  <%= link_to 'Cancel', versions_path %>
+  <%= link_to 'キャンセル', versions_path %>
 <% end %>
-  

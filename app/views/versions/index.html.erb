@@ -1,28 +1,30 @@
-<h2>Versions</h2>
+<h2>バージョン</h2>
 
 <%= form_with model: @new_version, local: true do |form| %>
-  <p>
-    <%= form.label :name %>
+  <div style="margin-block: 1em">
+    <div><%= form.label :name %></div>
     <% @new_version.errors.full_messages_for(:name).each do |message| %>
-      <div><%= message %></div>
+      <div style="color: red"><%= message %></div>
     <% end %>
-    <%= form.text_field :name %>
-  </p>
-  <p>
-    <%= form.submit 'Add Version' %>
-  </p>
+    <%= form.text_field :name, required: 'required' %>
+  </div>
+
+  <div style="margin-block: 1em">
+    <%= form.submit '追加する' %>
+  </div>
 <% end %>
   
 <ul>
   <% @versions.each do |version| %>
     <li>
       <turbo-frame id="version_<%= version.id %>">
-        <%= version.name %>
-        <%= link_to 'Edit', edit_version_path(version) %>
-        <%= link_to 'Delete', version, data: {
+        <%= link_to version.name, root_path(search: "version:#{version.name}"), target: '_top' %>
+        -
+        <%= link_to '編集', edit_version_path(version) %>
+        <%= link_to '削除', version, data: {
           turbo_frame: '_top',
           turbo_method: :delete,
-          turbo_confirm: 'Are you sure?',
+          turbo_confirm: "バージョン「#{version.name}」を本当に削除しますか？",
         } %>
       </turbo-frame>
     </li>

@@ -1,16 +1,17 @@
-<h2>Tags</h2>
+<h2>タグ</h2>
 
 <%= form_with model: @new_tag, local: true do |form| %>
-  <p>
-    <%= form.label :name %>
+  <div style="margin-block: 1em">
+    <div><%= form.label :name, 'タグ' %></div>
     <% @new_tag.errors.full_messages_for(:name).each do |message| %>
-      <div><%= message %></div>
+      <div style="color: red"><%= message %></div>
     <% end %>
-    <%= form.text_field :name %>
-  </p>
-  <p>
-    <%= form.submit 'Add Tag' %>
-  </p>
+    <%= form.text_field :name, required: 'required' %>
+  </div>
+
+  <div style="margin-block: 1em">
+    <%= form.submit '追加する' %>
+  </div>
 <% end %>
   
 <ul>
@@ -18,11 +19,12 @@
     <li>
       <turbo-frame id="tag_<%= tag.id %>">
         <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
-        <%= link_to 'Edit', edit_tag_path(tag) %>
-        <%= link_to 'Delete', tag, data: {
+        -
+        <%= link_to '編集', edit_tag_path(tag) %>
+        <%= link_to '削除', tag, data: {
           turbo_frame: '_top',
           turbo_method: :delete,
-          turbo_confirm: 'Are you sure?',
+          turbo_confirm: "タグ「#{tag.name}」を本当に削除しますか？",
         } %>
       </turbo-frame>
     </li>

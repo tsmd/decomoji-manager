@@ -1,17 +1,17 @@
-<h2><%= number_with_delimiter @count %> Decomojis</h2>
+<h2>デコモジ</h2>
 
-<p><%= link_to 'Add Decomoji', new_decomoji_path %></p>
+<p><%= link_to 'デコモジを追加する', new_decomoji_path %></p>
 
 <form action="<%= root_path %>">
   <p>
-    <label for="search">Search</label>
+    <label for="search">検索</label>
     <input type="text" name="search" value="<%= params[:search] %>" id="search">
-    <input type="submit" value="Search">
+    <input type="submit" value="検索">
   </p>
 </form>
 
 <% if @decomojis.empty? %>
-  <p>No decomojis found.</p>
+  <p>条件に合うデコモジがありません</p>
 <% else %>
   <nav aria-label="Pagination">
     <p>
@@ -25,9 +25,9 @@
   <table>
     <thead>
     <tr>
-      <th>Decomoji</th>
-      <th>Yomi</th>
-      <th>Version</th>
+      <th>デコモジ</th>
+      <th>よみがな</th>
+      <th>バージョン</th>
     </tr>
     </thead>
     <tbody>

@@ -1,6 +1,6 @@
 <% if decomoji.errors.any? %>
   <div id="error_explanation">
-    <h3><%= pluralize(decomoji.errors.count, "error") %> prohibited this decomoji from being saved:</h3>
+    <h3>確認してください</h3>
     <ul>
     <% decomoji.errors.full_messages.each do |message| %>
       <li><%= message %></li>
@@ -10,39 +10,39 @@
 <% end %>
 
 <%= form_with model: decomoji do |f| %>
-  <p>
-    <%= f.label :name %><br>
+  <div style="margin-block: 1em">
+    <div><%= f.label :name, '名前（必須）' %></div>
     <% decomoji.errors.full_messages_for(:name).each do |message| %>
-      <div><%= message %></div>
+      <div style="color: red"><%= message %></div>
     <% end %>
-    <%= f.text_field :name %>
-  </p>
+    <%= f.text_field :name, required: 'required' %>
+  </div>
 
-  <p>
-    <%= f.label :yomi %><br>
+  <div style="margin-block: 1em">
+    <div><%= f.label :yomi, 'よみがな' %></div>
     <% decomoji.errors.full_messages_for(:yomi).each do |message| %>
-      <div><%= message %></div>
+      <div style="color: red"><%= message %></div>
     <% end %>
     <%= f.text_field :yomi %>
-  </p>
+  </div>
 
-  <p>
-    <%= f.label :image %><br>
+  <div style="margin-block: 1em">
+    <div><%= f.label :image, 'デコモジ' %></div>
     <% decomoji.errors.full_messages_for(:image).each do |message| %>
-      <div><%= message %></div>
+      <div style="color: red"><%= message %></div>
     <% end %>
     <%= f.file_field :image, accept: 'image/png' %>
-  </p>
+  </div>
 
-  <p>
-    <%= f.label :version_id, "Version" %><br>
+  <div style="margin-block: 1em">
+    <div><%= f.label :version_id, 'バージョン（必須）' %></div>
     <% decomoji.errors.full_messages_for(:version).each do |message| %>
-      <div><%= message %></div>
+      <div style="color: red"><%= message %></div>
     <% end %>
     <%= f.collection_radio_buttons :version_id, Version.ordered_by_gem_version, :id, :name %>
-  </p>
+  </div>
 
-  <p>
+  <div style="margin-block: 1em">
     <%= f.submit %>
-  </p>
+  </div>
 <% end %>

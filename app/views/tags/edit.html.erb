@@ -1,11 +1,10 @@
-<h2>Edit Tag</h2>
+<h2>タグを編集する</h2>
 
 <%= turbo_frame_tag @tag do %>
-  <%= form_with model: @tag do |form| %>
+  <%= form_with model: @tag, html: { style: 'display: inline' } do |form| %>
     <%= form.text_field :name %>
-    <%= form.submit 'Update' %>
+    <%= form.submit '更新' %>
   <% end %>
 
-  <%= link_to 'Cancel', tags_path %>
+  <%= link_to 'キャンセル', tags_path %>
 <% end %>
-  
