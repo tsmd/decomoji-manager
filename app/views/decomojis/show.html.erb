@@ -38,7 +38,7 @@
 <ul>
   <% @decomoji.tags.each do |tag| %>
     <li>
-      <%= tag.name %>
+      <%= link_to tag.name, root_path(search: "tag:#{tag.name}") %>
       -
       <%= link_to 'Delete', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), data: {
         turbo_method: :delete,

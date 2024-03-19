@@ -2,8 +2,23 @@ class DecomojisController < ApplicationController
   include Pagy::Backend
 
   def index
-    @pagy, @decomojis = pagy(Decomoji.all, items: 250, size: [1, 6, 6, 1])
-    @count = Decomoji.count
+    search_result = search_decomojis(params[:search])
+    @pagy, @decomojis = pagy(search_result, items: 250, size: [1, 6, 6, 1])
+    @count = search_result.count
+  end
+  
+  def search_decomojis(search)
+    return Decomoji.all if search.blank?
+
+    tokens = search.split
+    tokens.inject(Decomoji.all) do |scope, token|
+      if token.start_with?('tag:')
+        tag_name = token.delete_prefix('tag:')
+        scope.joins(:tags).where(tags: { name: tag_name })
+      else
+        scope.left_joins(:aliases).where('decomojis.name LIKE ? OR decomojis.yomi LIKE ? OR aliases.name LIKE ?', "%#{token}%", "%#{token}%", "%#{token}%")
+      end
+    end
   end
 
   def show

@@ -2,35 +2,47 @@
 
 <p><%= link_to 'Add Decomoji', new_decomoji_path %></p>
 
-<nav aria-label="Pagination">
+<form action="<%= root_path %>">
   <p>
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    <label for="search">Search</label>
+    <input type="text" name="search" value="<%= params[:search] %>" id="search">
+    <input type="submit" value="Search">
   </p>
-  <p>
-    <%= pagy_info_with_comma(@pagy) %>
-  </p>
-</nav>
+</form>
 
-<table>
-  <thead>
+<% if @decomojis.empty? %>
+  <p>No decomojis found.</p>
+<% else %>
+  <nav aria-label="Pagination">
+    <p>
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </p>
+    <p>
+      <%= pagy_info_with_comma(@pagy) %>
+    </p>
+  </nav>
+
+  <table>
+    <thead>
     <tr>
       <th>Decomoji</th>
       <th>Yomi</th>
       <th>Version</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <% @decomojis.each do |decomoji| %>
-      <tr>
-        <td>
-          <%= link_to decomoji do %>
-            <%= image_tag decomoji.image, width: 24, height: 24, loading: 'lazy' %>
-            <%= decomoji.name %>
-          <% end %>
-        </td>
-        <td><%= decomoji.yomi %></td>
-        <td><%= decomoji.version.name %></td>
-      </tr>
+    <tr>
+      <td>
+        <%= link_to decomoji do %>
+        <%= image_tag decomoji.image, width: 24, height: 24, loading: 'lazy' %>
+        <%= decomoji.name %>
+        <% end %>
+      </td>
+      <td><%= decomoji.yomi %></td>
+      <td><%= decomoji.version.name %></td>
+    </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+<% end %>

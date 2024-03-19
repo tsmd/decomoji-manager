@@ -17,7 +17,7 @@
   <% @tags.each do |tag| %>
     <li>
       <turbo-frame id="tag_<%= tag.id %>">
-        <%= tag.name %>
+        <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
         <%= link_to 'Edit', edit_tag_path(tag) %>
         <%= link_to 'Delete', tag, data: {
           turbo_frame: '_top',
