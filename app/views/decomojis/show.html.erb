@@ -6,6 +6,12 @@
 
 <p>よみがな：<%= @decomoji.yomi %></p>
 
+<p>フォント：<%= @decomoji.font %></p>
+
+<p>組版：<%= @decomoji.typesetting.presence || '（なし）' %></p>
+
+<p>色：<span role="img" aria-label="<%= @decomoji.color.name %>" style="display:inline-block;width:16px;height:16px;background-color:<%= @decomoji.color.hex %>"></span> <%= @decomoji.color.name %></p>
+
 <h3>アクション</h3>
 <ul>
   <li><%= link_to '編集', edit_decomoji_path(@decomoji) %></li>

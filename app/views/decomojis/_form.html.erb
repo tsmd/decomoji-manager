@@ -35,6 +35,17 @@
   </div>
 
   <div style="margin-block: 1em">
+    <div><%= f.label :color_id, '色（必須）' %></div>
+    <% Color.all.each do |color| %>
+      <%= f.radio_button :color_id, color.id, id: "color_#{color.id}" %>
+      <label for="color_<%= color.id %>">
+        <span style="display:inline-block;width:16px;height:16px;background-color:<%= color.hex %>"></span>
+        <%= color.name %>
+      </label>
+    <% end %>
+  </div>
+
+  <div style="margin-block: 1em">
     <div><%= f.label :version_id, 'バージョン（必須）' %></div>
     <% decomoji.errors.full_messages_for(:version).each do |message| %>
       <div style="color: red"><%= message %></div>

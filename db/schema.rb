@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_17_133355) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_20_152106) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,6 +47,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_133355) do
     t.index ["decomoji_id"], name: "index_aliases_on_decomoji_id"
   end
 
+  create_table "colors", force: :cascade do |t|
+    t.string "name"
+    t.string "hex"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "decomoji_tags", force: :cascade do |t|
     t.integer "decomoji_id", null: false
     t.integer "tag_id", null: false
@@ -62,6 +69,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_133355) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "version_id"
+    t.string "font", default: "sans-serif"
+    t.integer "color_id"
+    t.string "typesetting"
+    t.index ["color_id"], name: "index_decomojis_on_color_id"
     t.index ["name"], name: "index_decomojis_on_name", unique: true
     t.index ["version_id"], name: "index_decomojis_on_version_id"
   end
@@ -85,5 +96,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_133355) do
   add_foreign_key "aliases", "decomojis"
   add_foreign_key "decomoji_tags", "decomojis"
   add_foreign_key "decomoji_tags", "tags"
+  add_foreign_key "decomojis", "colors"
   add_foreign_key "decomojis", "versions"
 end

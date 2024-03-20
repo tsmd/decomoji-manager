@@ -17,6 +17,8 @@ class Decomoji < ApplicationRecord
 
   before_save :replace_image, if: -> { image.attached? && image.changed? }
 
+  belongs_to :color
+
   private
 
   def unique_name_across_models
