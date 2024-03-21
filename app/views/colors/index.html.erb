@@ -1,0 +1,10 @@
+<h2>色</h2>
+  
+<ul>
+  <% @colors.each do |color| %>
+    <li>
+      <span style="display:inline-block;width:16px;height:16px;background-color:<%= color.hex %>"></span>
+      <%= link_to color.name, root_path(search: "color:#{color.name}") %>
+    </li>
+  <% end %>
+</ul>

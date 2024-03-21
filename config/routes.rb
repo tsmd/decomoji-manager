@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   resources :tags, except: [:new, :show]
 
   resources :versions, except: [:new, :show]
+
+  resources :colors, only: [:index]
 end

@@ -10,7 +10,7 @@
 
 <p>組版：<%= @decomoji.typesetting.presence || '（なし）' %></p>
 
-<p>色：<span role="img" aria-label="<%= @decomoji.color.name %>" style="display:inline-block;width:16px;height:16px;background-color:<%= @decomoji.color.hex %>"></span> <%= @decomoji.color.name %></p>
+<p>色：<span style="display:inline-block;width:16px;height:16px;background-color:<%= @decomoji.color.hex %>"></span> <%= @decomoji.color.name %></p>
 
 <h3>アクション</h3>
 <ul>

@@ -18,6 +18,9 @@ class DecomojisController < ApplicationController
       elsif token.start_with?('version:')
         version_name = token.delete_prefix('version:')
         scope.joins(:version).where(versions: { name: version_name })
+      elsif token.start_with?('color:')
+        color_name = token.delete_prefix('color:')
+        scope.joins(:color).where(colors: { name: color_name })
       else
         scope.left_joins(:aliases).where('decomojis.name LIKE ? OR decomojis.yomi LIKE ? OR aliases.name LIKE ?', "%#{token}%", "%#{token}%", "%#{token}%")
       end
