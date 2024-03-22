@@ -4,6 +4,6 @@ module DecomojisHelper
     from = number_with_delimiter(pagy.from)
     to = number_with_delimiter(pagy.to)
 
-    "Displaying items #{from} - #{to} of #{total}"
+    "#{total} 件中 #{from} から #{to} 件目を表示中"
   end
 end
