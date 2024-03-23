@@ -28,6 +28,8 @@
       <th scope="col"></th>
       <th scope="col">デコモジ</th>
       <th scope="col">よみがな</th>
+      <th scope="col">訓令式</th>
+      <th scope="col">ヘボン式</th>
       <th scope="col">バージョン</th>
     </tr>
     </thead>
@@ -40,6 +42,8 @@
         <%= link_to decomoji.name, decomoji %>
       </th>
       <td><%= decomoji.yomi %></td>
+      <td><%= decomoji.yomi_kunrei %></td>
+      <td><%= decomoji.yomi_hepburn %></td>
       <td><%= decomoji.version.name %></td>
     </tr>
     <% end %>
