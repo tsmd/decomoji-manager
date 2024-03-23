@@ -32,6 +32,7 @@ class RomajiKanaConverterTest < Minitest::Test
   def test_to_kana
     assert_equal 'こんにちは', to_kana('konnnichiha')
     assert_equal 'こんにちは', to_kana('konnnitiha')
+    assert_equal 'せんやいちや', to_kana('sennyaitiya')
     assert_equal 'ありがたい_', to_kana('arigatai_')
     assert_equal 'せーふ_', to_kana('se-hu_')
     assert_equal 'ういうx', to_kana('uiux')

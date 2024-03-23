@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_20_152106) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_23_054714) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -96,6 +96,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_20_152106) do
   add_foreign_key "aliases", "decomojis"
   add_foreign_key "decomoji_tags", "decomojis"
   add_foreign_key "decomoji_tags", "tags"
-  add_foreign_key "decomojis", "colors"
-  add_foreign_key "decomojis", "versions"
+  add_foreign_key "decomojis", "colors", on_delete: :nullify
+  add_foreign_key "decomojis", "versions", on_delete: :nullify
 end

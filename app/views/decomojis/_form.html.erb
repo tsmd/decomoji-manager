@@ -35,7 +35,12 @@
   </div>
 
   <div style="margin-block: 1em">
-    <div><%= f.label :color_id, '色（必須）' %></div>
+    <div><%= f.label :color_id, '色' %></div>
+    <% decomoji.errors.full_messages_for(:color).each do |message| %>
+    <div style="color: red"><%= message %></div>
+    <% end %>
+    <%= f.radio_button :color_id, '', id: 'color_nil' %>
+    <label for="color_nil">指定無し</label>
     <% Color.all.each do |color| %>
       <%= f.radio_button :color_id, color.id, id: "color_#{color.id}" %>
       <label for="color_<%= color.id %>">
@@ -46,11 +51,16 @@
   </div>
 
   <div style="margin-block: 1em">
-    <div><%= f.label :version_id, 'バージョン（必須）' %></div>
+    <div><%= f.label :version_id, 'バージョン' %></div>
     <% decomoji.errors.full_messages_for(:version).each do |message| %>
       <div style="color: red"><%= message %></div>
     <% end %>
-    <%= f.collection_radio_buttons :version_id, Version.ordered_by_gem_version, :id, :name %>
+    <%= f.radio_button :version_id, '', id: 'version_nil' %>
+    <label for="version_nil">指定無し</label>
+    <% Version.ordered_by_gem_version.each do |version| %>
+      <%= f.radio_button :version_id, version.id, id: "version_#{version.id}" %>
+      <label for="version_<%= version.id %>"><%= version.name %></label>
+    <% end %>
   </div>
 
   <div style="margin-block: 1em">

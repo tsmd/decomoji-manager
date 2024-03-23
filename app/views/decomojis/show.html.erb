@@ -1,4 +1,9 @@
-<h2><%= @decomoji.name %> (<%= @decomoji.version.name %>)</h2>
+<h2>
+  <%= @decomoji.name %>
+  <% if @decomoji.version.present? %>
+    (<%= @decomoji.version.name %>)
+  <% end %>
+</h2>
 
 <% if @decomoji.image.attached? %>
   <p><%= image_tag @decomoji.image, width: 64, height: 64, alt: '' %></p>
@@ -10,7 +15,14 @@
 
 <p>組版：<%= @decomoji.typesetting.presence || '（なし）' %></p>
 
-<p>色：<span style="display:inline-block;width:16px;height:16px;background-color:<%= @decomoji.color.hex %>"></span> <%= @decomoji.color.name %></p>
+<p>色：
+  <% if @decomoji.color.present? %>
+    <span style="display:inline-block;width:16px;height:16px;background-color:<%= @decomoji.color.hex %>"></span>
+    <%= @decomoji.color.name %>
+  <% else %>
+    （指定無し）
+  <% end %>
+</p>
 
 <h3>アクション</h3>
 <ul>

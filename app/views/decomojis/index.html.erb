@@ -36,7 +36,13 @@
     <tbody>
     <% @decomojis.each do |decomoji| %>
     <tr>
-      <td><span role="img" aria-label="<%= decomoji.color.name %>" style="display:inline-block;width:16px;height:16px;background-color:<%= decomoji.color.hex %>"></span></td>
+      <td>
+        <% if decomoji.color.present? %>
+          <span role="img" aria-label="<%= decomoji.color.name %>" style="display:inline-block;width:16px;height:16px;background-color:<%= decomoji.color.hex %>"></span>
+        <% else %>
+          <span style="display:inline-block;width:16px;height:16px;box-sizing:border-box;border:1px solid"></span>
+        <% end %>
+      </td>
       <th scope="row" style="text-align:left;">
         <%= image_tag decomoji.image, width: 24, height: 24, loading: 'lazy' %>
         <%= link_to decomoji.name, decomoji %>
@@ -44,9 +50,15 @@
       <td><%= decomoji.yomi %></td>
       <td><%= decomoji.yomi_kunrei %></td>
       <td><%= decomoji.yomi_hepburn %></td>
-      <td><%= decomoji.version.name %></td>
+      <td><%= decomoji.version&.name %></td>
     </tr>
     <% end %>
     </tbody>
   </table>
+  <p>
+    <%= pagy_info_with_comma(@pagy) %>
+  </p>
+  <p>
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </p>
 <% end %>
