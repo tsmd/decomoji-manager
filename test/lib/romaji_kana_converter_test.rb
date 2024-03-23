@@ -51,5 +51,6 @@ class RomajiKanaConverterTest < Minitest::Test
     assert_equal 'さんじのおやつはぶんめいどう', to_kana_adjusted('sanzinooyatsuhabunmeidou', '三時のおやつは文明堂')
     assert_equal 'GENKIもりもりMAXです', to_kana_adjusted('genkimorimorimaxdesu', 'GENKI盛り盛りMAXです')
     assert_equal 'いきはYOIYOIかえりはKOWAI', to_kana_adjusted('ikihayoiyoikaerihakowai', '行きはYOIYOI帰りはKOWAI')
+    assert_equal 'うかつあり', to_kana_adjusted('ukatuari', '迂闊あり')
   end
 end

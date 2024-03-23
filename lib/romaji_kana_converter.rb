@@ -144,12 +144,11 @@ module RomajiKanaConverter
   def to_kana_adjusted(str, original)
     # 正規化
     str = str.downcase
-    original = NKF.nkf('-w -Z', original)
+    original = NKF.nkf('-w -W -Z', original)
 
     # originalからアルファベットの並びだけを抽出する
     original_parts = original.scan(/[a-zA-Z!?]+/)
 
-    # 見つからなかったら
     if original_parts.empty?
       return to_kana(str)
     end
@@ -189,10 +188,10 @@ module RomajiKanaConverter
 
   def to_romaji(str, table1, table2, table3)
     # 文字列を正規化
-    # -w: UTF-8
+    # -w, -W: UTF-8
     # -h1: 片仮名を平仮名に変換する
     # -Z: X0208 アルファベットといくつかの記号を ASCII に変換する
-    str = NKF.nkf('-w -h1 -Z', str).downcase
+    str = NKF.nkf('-w -W -h1 -Z', str).downcase
 
     result = ''
     i = 0
