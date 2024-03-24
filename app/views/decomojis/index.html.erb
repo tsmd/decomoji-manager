@@ -14,7 +14,7 @@
   <p>条件に合うデコモジがありません</p>
 <% else %>
   <p>
-    全件ダウンロード：
+    他フォーマット：
     <%= link_to 'JSON', decomojis_path(format: :json, search: params[:search]) %>
     <%= link_to 'CSV', decomojis_path(format: :csv, search: params[:search]) %>
     <%= link_to 'TSV', decomojis_path(format: :tsv, search: params[:search]) %>
