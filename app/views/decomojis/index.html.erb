@@ -22,39 +22,16 @@
     </p>
   </nav>
 
-  <table>
-    <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">デコモジ</th>
-      <th scope="col">よみがな</th>
-      <th scope="col">訓令式</th>
-      <th scope="col">ヘボン式</th>
-      <th scope="col">バージョン</th>
-    </tr>
-    </thead>
-    <tbody>
+  <ul class="decomojis">
     <% @decomojis.each do |decomoji| %>
-    <tr>
-      <td>
-        <% if decomoji.color.present? %>
-          <span role="img" aria-label="<%= decomoji.color.name %>" style="display:inline-block;width:16px;height:16px;background-color:<%= decomoji.color.hex %>"></span>
-        <% else %>
-          <span style="display:inline-block;width:16px;height:16px;box-sizing:border-box;border:1px solid"></span>
-        <% end %>
-      </td>
-      <th scope="row" style="text-align:left;">
-        <%= image_tag decomoji.image, width: 24, height: 24, loading: 'lazy' %>
-        <%= link_to decomoji.name, decomoji %>
-      </th>
-      <td><%= decomoji.yomi %></td>
-      <td><%= decomoji.yomi_kunrei %></td>
-      <td><%= decomoji.yomi_hepburn %></td>
-      <td><%= decomoji.version&.name %></td>
-    </tr>
+    <li class="decomoji" style="border-color:<%= decomoji.color.hex %>">
+      <%= link_to decomoji do %>
+        <%= image_tag decomoji.image, alt: decomoji.name, width: 64, height: 64, loading: 'lazy' %>
+      <% end %>
+    </li>
     <% end %>
-    </tbody>
-  </table>
+  </ul>
+
   <p>
     <%= pagy_info_with_comma(@pagy) %>
   </p>

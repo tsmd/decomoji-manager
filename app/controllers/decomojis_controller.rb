@@ -3,15 +3,16 @@ class DecomojisController < ApplicationController
 
   def index
     search_result = search_decomojis(params[:search])
-    @pagy, @decomojis = pagy(search_result, items: 250, size: [1, 6, 6, 1])
+    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 6, 6, 1])
     @count = search_result.count
   end
   
   def search_decomojis(search)
-    return Decomoji.all if search.blank?
+    all = Decomoji.includes(:color, image_attachment: :blob).all
+    return all if search.blank?
 
     tokens = search.split
-    tokens.inject(Decomoji.all) do |scope, token|
+    tokens.inject(all) do |scope, token|
       if token.start_with?('tag:')
         tag_name = token.delete_prefix('tag:')
         scope.joins(:tags).where(tags: { name: tag_name })
@@ -23,7 +24,9 @@ class DecomojisController < ApplicationController
         scope.joins(:color).where(colors: { name: color_name })
       else
         token = token.tr('ァ-ン', 'ぁ-ん')
-        scope.left_joins(:aliases).where('decomojis.name LIKE ? OR decomojis.yomi LIKE ? OR aliases.name LIKE ?', "%#{token}%", "%#{token}%", "%#{token}%")
+        scope.left_joins(:aliases)
+             .where('decomojis.name LIKE ? OR decomojis.yomi LIKE ? OR aliases.name LIKE ?', "%#{token}%", "%#{token}%", "%#{token}%")
+             .distinct
       end
     end
   end

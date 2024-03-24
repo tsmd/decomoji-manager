@@ -17,3 +17,24 @@
 html {
   font-family: sans-serif;
 }
+
+.decomojis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(64px + 16px + 4px));
+  justify-content: center;
+  gap: 1rem;
+  padding-left: 0;
+}
+
+.decomoji {
+  border: 2px solid;
+  border-radius: 0.25rem;
+  list-style-type: '';
+  a {
+    display: block;
+    padding: 0.5rem;
+  }
+  img {
+    vertical-align: bottom;
+  }
+}
