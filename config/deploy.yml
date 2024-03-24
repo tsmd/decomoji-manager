@@ -6,7 +6,13 @@ image: tsmd57/decomoji-manager
 
 # Deploy to these servers.
 servers:
-  - 157.120.61.208
+  web:
+    hosts:
+      - 157.120.61.208
+    labels:
+      traefik.http.routers.decomoji-manager.entrypoints: websecure
+      traefik.http.routers.decomoji-manager.rule: Host(`decomoji-manager.tsmd.jp`)
+      traefik.http.routers.decomoji-manager.tls.certresolver: letsencrypt
 
 # Credentials for your image host.
 registry:
@@ -64,10 +70,24 @@ ssh:
 #       - data:/data
 
 # Configure custom arguments for Traefik
-# traefik:
-#   args:
-#     accesslog: true
-#     accesslog.format: json
+traefik:
+  options:
+    publish:
+      - "443:443"
+    volume:
+      - "/letsencrypt:/letsencrypt"
+  args:
+    #accesslog: true
+    #accesslog.format: json
+    entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+    entryPoints.web.http.redirections.entryPoint.to: websecure
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+    certificatesResolvers.letsencrypt.acme.email: "taka@tsmd.jp"
+    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
+    certificatesResolvers.letsencrypt.acme.httpchallenge: true
+    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: web
 
 # Configure a custom healthcheck (default is /up on port 3000)
 # healthcheck:
