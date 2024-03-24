@@ -3,7 +3,7 @@ class DecomojisController < ApplicationController
 
   def index
     search_result = search_decomojis(params[:search])
-    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 6, 6, 1])
+    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
     @count = search_result.count
   end
   

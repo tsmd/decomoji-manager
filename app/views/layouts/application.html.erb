@@ -11,15 +11,16 @@
   </head>
 
   <body>
-    <header>
+    <header id="header">
       <h1><%= link_to "デコモジマネージャー", root_path %></h1>
-      <ul>
-        <li><%= link_to "デコモジ", root_path %></li>
-        <li><%= link_to "タグ", tags_path %></li>
-        <li><%= link_to "バージョン", versions_path %></li>
-        <li><%= link_to "色", colors_path %></li>
-      </ul>
-      <hr>
+      <nav aria-label="サイトナビゲーション">
+        <ul>
+          <li><%= link_to "デコモジ", root_path %></li>
+          <li><%= link_to "タグ", tags_path %></li>
+          <li><%= link_to "バージョン", versions_path %></li>
+          <li><%= link_to "色", colors_path %></li>
+        </ul>
+      </nav>
     </header>
     <%= yield %>
   </body>

@@ -28,6 +28,9 @@
 
   <div style="margin-block: 1em">
     <div><%= f.label :image, 'デコモジ' %></div>
+    <% if decomoji.image.attached? %>
+      <div><%= image_tag decomoji.image, width: 64, height: 64, alt: '' %></div>
+    <% end %>
     <% decomoji.errors.full_messages_for(:image).each do |message| %>
       <div style="color: red"><%= message %></div>
     <% end %>
@@ -35,35 +38,57 @@
   </div>
 
   <div style="margin-block: 1em">
-    <div><%= f.label :color_id, '色' %></div>
+    <div><%= f.label :typesetting, '組版' %></div>
+    <% decomoji.errors.full_messages_for(:typesetting).each do |message| %>
+      <div style="color: red"><%= message %></div>
+    <% end %>
+    <%= f.text_field :typesetting %>
+  </div>
+
+  <fieldset style="margin-block: 1em">
+    <legend>フォント</legend>
+    <% decomoji.errors.full_messages_for(:font).each do |message| %>
+      <div style="color: red"><%= message %></div>
+    <% end %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));">
+      <label><%= f.radio_button :font, 'sans-serif' %> sans-serif</label>
+      <label><%= f.radio_button :font, 'serif' %> serif</label>
+      <label><%= f.radio_button :font, 'latin' %> latin</label>
+    </div>
+  </fieldset>
+
+  <fieldset style="margin-block: 1em">
+    <legend>色</legend>
     <% decomoji.errors.full_messages_for(:color).each do |message| %>
     <div style="color: red"><%= message %></div>
     <% end %>
-    <%= f.radio_button :color_id, '', id: 'color_nil' %>
-    <label for="color_nil">指定無し</label>
-    <% Color.all.each do |color| %>
-      <%= f.radio_button :color_id, color.id, id: "color_#{color.id}" %>
-      <label for="color_<%= color.id %>">
-        <span style="display:inline-block;width:16px;height:16px;background-color:<%= color.hex %>"></span>
-        <%= color.name %>
-      </label>
-    <% end %>
-  </div>
+    <label><%= f.radio_button :color_id, '' %> 指定なし</label>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));">
+      <% Color.all.each do |color| %>
+        <label>
+          <%= f.radio_button :color_id, color.id %>
+          <span style="display:inline-block;width:16px;height:16px;background-color:<%= color.hex %>"></span>
+          <%= color.name %>
+        </label>
+      <% end %>
+    </div>
+  </fieldset>
 
-  <div style="margin-block: 1em">
-    <div><%= f.label :version_id, 'バージョン' %></div>
+  <fieldset style="margin-block: 1em">
+    <legend>バージョン</legend>
     <% decomoji.errors.full_messages_for(:version).each do |message| %>
       <div style="color: red"><%= message %></div>
     <% end %>
-    <%= f.radio_button :version_id, '', id: 'version_nil' %>
-    <label for="version_nil">指定無し</label>
-    <% Version.ordered_by_gem_version.each do |version| %>
-      <%= f.radio_button :version_id, version.id, id: "version_#{version.id}" %>
-      <label for="version_<%= version.id %>"><%= version.name %></label>
-    <% end %>
-  </div>
+    <label><%= f.radio_button :version_id, '' %> 指定なし</label>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));">
+      <% Version.ordered_by_gem_version.each do |version| %>
+        <label>
+          <%= f.radio_button :version_id, version.id %>
+          <%= version.name %>
+        </label>
+      <% end %>
+    </div>
+  </fieldset>
 
-  <div style="margin-block: 1em">
-    <%= f.submit %>
-  </div>
+  <p><%= f.submit %></p>
 <% end %>
