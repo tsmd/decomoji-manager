@@ -1,30 +1,45 @@
 require 'csv'
 
 class DecomojisController < ApplicationController
+  include ActionController::Live
   include Pagy::Backend
 
   def index
-    puts request.format.html?, request.format.json?
     search_result = search_decomojis(params[:search])
-    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
-    @count = search_result.count
 
     respond_to do |format|
-      format.html
-      format.json { render json: search_result.map(&:as_json) }
-      format.csv do
-        csv = CSV.generate do |csv|
-          csv << Decomoji.row_header
-          search_result.each { |decomoji| csv << decomoji.as_row }
-        end
-        send_data csv, type: 'text/csv; charset=utf-8', disposition: 'inline'
+      format.html do
+        @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
+        @count = search_result.count
       end
-      format.tsv do
-        tsv = CSV.generate(col_sep: "\t") do |csv|
-          csv << Decomoji.row_header
-          search_result.each { |decomoji| csv << decomoji.as_row }
+
+      format.json do
+        response.headers['Content-Type'] = 'application/json; charset=utf-8'
+        response.stream.write '['
+        search_result.find_each.with_index do |decomoji, i|
+          response.stream.write ',' unless i.zero?
+          response.stream.write decomoji.as_json.to_json
         end
-        send_data tsv, type: 'text/tab-separated-values; charset=utf-8', disposition: 'inline'
+        response.stream.write ']'
+        response.stream.close
+      end
+
+      format.csv do
+        response.headers['Content-Type'] = 'text/csv; charset=utf-8'
+        response.stream.write CSV.generate_line(Decomoji.row_header)
+        search_result.find_each do |decomoji|
+          response.stream.write CSV.generate_line(decomoji.as_row)
+        end
+        response.stream.close
+      end
+
+      format.tsv do
+        response.headers['Content-Type'] = 'text/tab-separated-values; charset=utf-8'
+        response.stream.write CSV.generate_line(Decomoji.row_header, col_sep: "\t")
+        search_result.find_each do |decomoji|
+          response.stream.write CSV.generate_line(decomoji.as_row, col_sep: "\t")
+        end
+        response.stream.close
       end
     end
   end
