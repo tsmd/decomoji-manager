@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   root "decomojis#index"
 
   #get "/decomojis/:id", to: "decomojis#show"
-  resources :decomojis, except: [:index] do
+  resources :decomojis do
     resources :aliases, only: [:create, :destroy]
 
     member do
@@ -17,7 +17,6 @@ Rails.application.routes.draw do
       delete 'remove_tag/:tag_id', to: 'decomojis#remove_tag', as: 'remove_tag'
     end
   end
-  get "/decomojis", to: redirect("/")
 
   resources :tags, except: [:new, :show]
 

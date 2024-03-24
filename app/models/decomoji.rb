@@ -28,6 +28,30 @@ class Decomoji < ApplicationRecord
     yomi.present? ? to_hepburn_romaji(yomi) : ''
   end
 
+  def as_json
+    super({
+      only: [:name, :yomi, :font, :typesetting],
+      include: {
+        color: { only: [:name, :hex] },
+        version: { only: :name },
+        tags: { only: :name },
+        aliases: { only: :name }
+      }
+    })
+  end
+
+  def self.row_header
+    %w(name yomi typesetting alias1 alias2 alias3 tag1 tag2 tag3 color font version)
+  end
+
+  def as_row
+    row = [name, yomi, typesetting]
+    row += aliases.limit(3).pluck(:name).tap { |a| a.fill('', a.size..2) }
+    row += tags.limit(3).pluck(:name).tap { |t| t.fill('', t.size..2) }
+    row += [color&.name, font, version&.name]
+    row
+  end
+
   private
 
   def validate_image_format

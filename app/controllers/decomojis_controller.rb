@@ -1,14 +1,36 @@
+require 'csv'
+
 class DecomojisController < ApplicationController
   include Pagy::Backend
 
   def index
+    puts request.format.html?, request.format.json?
     search_result = search_decomojis(params[:search])
     @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
     @count = search_result.count
+
+    respond_to do |format|
+      format.html
+      format.json { render json: search_result.map(&:as_json) }
+      format.csv do
+        csv = CSV.generate do |csv|
+          csv << Decomoji.row_header
+          search_result.each { |decomoji| csv << decomoji.as_row }
+        end
+        send_data csv, type: 'text/csv; charset=utf-8', disposition: 'inline'
+      end
+      format.tsv do
+        tsv = CSV.generate(col_sep: "\t") do |csv|
+          csv << Decomoji.row_header
+          search_result.each { |decomoji| csv << decomoji.as_row }
+        end
+        send_data tsv, type: 'text/tab-separated-values; charset=utf-8', disposition: 'inline'
+      end
+    end
   end
-  
+
   def search_decomojis(search)
-    all = Decomoji.includes(:color, image_attachment: :blob).all
+    all = Decomoji.preload(:tags, :aliases).eager_load(:color, :version, image_attachment: :blob).all
     return all if search.blank?
 
     tokens = search.split
