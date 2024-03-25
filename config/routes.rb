@@ -8,9 +8,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "decomojis#index"
 
-  #get "/decomojis/:id", to: "decomojis#show"
   resources :decomojis do
     resources :aliases, only: [:create, :destroy]
+
+    collection do
+      resources :bulk_add_tag, only: [:new, :create]
+    end
 
     member do
       post 'add_tag'

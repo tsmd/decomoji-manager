@@ -20,7 +20,7 @@
     <%= link_to 'TSV', decomojis_path(format: :tsv, search: params[:search]) %>
   </p>
 
-  <nav aria-label="Pagination">
+  <nav aria-label="ページング">
     <p>
       <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
     </p>
@@ -29,15 +29,50 @@
     </p>
   </nav>
 
-  <ul class="decomojis">
-    <% @decomojis.each do |decomoji| %>
-    <li class="decomoji" style="border-color:<%= decomoji.color.hex %>">
-      <%= link_to decomoji do %>
-        <%= image_tag decomoji.image, alt: decomoji.name, width: 64, height: 64, loading: 'lazy' %>
+  <%= form_with class: 'decomojis-form', data: {
+    controller: 'enhanced-checkbox',
+    action: 'click->enhanced-checkbox#memoShiftKey change->enhanced-checkbox#handleCheck',
+  } do %>
+    <div class="bulk-edit">
+      選択したものを
+      <button
+        type="submit"
+        formaction="<%= new_bulk_add_tag_path %>"
+        formmethod="get"
+        data-turbo-frame="new-bulk-add-tag"
+        data-controller="invoker"
+        data-invoker-target-value="bulk-add-tag"
+        data-action="click->invoker#invoke"
+      >
+        <%# invoketarget="bulk-add-tag" %>
+        まとめてタグ付け
+      </button>
+      <button type="reset">選択解除</button>
+
+      <dialog id="bulk-add-tag" data-controller="dialog" data-action="invoker:invoke->dialog#showModal">
+        <button type="button" data-action="dialog#close">閉じる</button>
+        <turbo-frame id="new-bulk-add-tag" loading="lazy"></turbo-frame>
+      </dialog>
+    </div>
+    <ul class="decomojis">
+      <% @decomojis.each do |decomoji| %>
+      <li class="decomoji" style="--decomoji-color: <%= decomoji.color.hex %>">
+        <label>
+          <input
+            type="checkbox"
+            name="ids[]"
+            value="<%= decomoji.id %>"
+            aria-labelledby="decomoji-<%= decomoji.id %>"
+            data-enhanced-checkbox-target="checkbox"
+          >
+        </label>
+        <%= link_to decomoji do %>
+          <%= image_tag decomoji.image, id: "decomoji-#{decomoji.id}", alt: decomoji.name, width: 64, height: 64, loading: 'lazy' %>
+        <% end %>
+      </li>
       <% end %>
-    </li>
-    <% end %>
-  </ul>
+    </ul>
+  <% end %>
 
   <p>
     <%= pagy_info_with_comma(@pagy) %>

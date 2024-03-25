@@ -1,0 +1,20 @@
+<turbo-frame id="new-bulk-add-tag">
+  <h2><%= number_with_delimiter @ids.size %>個のデコモジにタグを追加する</h2>
+  <%= form_with url: bulk_add_tag_index_path, method: 'post', html: { 'data-turbo-frame': '_top' } do |form| %>
+    <% @ids.each do |id| %>
+      <input type="hidden" name="ids[]" value="<%= id %>">
+    <% end %>
+
+    <p>
+      <%= form.label :tag_name, 'タグ' %>
+      <%= text_field_tag :tag_name, nil, required: true, list: 'tag-list' %>
+      <%= form.submit '追加する' %>
+    </p>
+
+    <datalist id="tag-list">
+      <% @all_tags.each do |tag| %>
+        <option value="<%= tag.name %>">
+      <% end %>
+    </datalist>
+  <% end %>
+</turbo-frame>
