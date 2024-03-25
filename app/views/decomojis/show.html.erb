@@ -37,56 +37,60 @@
 
 <hr>
 
-<h3>エイリアス</h3>
-<% if @decomoji.aliases.empty? %>
-  <p>エイリアスはありません。</p>
-<% else %>
-  <ul>
-    <% @decomoji.aliases.each do |decomoji_alias| %>
-      <li>
-        <%= decomoji_alias.name %>
-        -
-        <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), data: {
-          turbo_method: :delete,
-        } %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+<turbo-frame id="aliases">
+  <h3>エイリアス</h3>
+  <% if @decomoji.aliases.empty? %>
+    <p>エイリアスはありません。</p>
+  <% else %>
+    <ul>
+      <% @decomoji.aliases.each do |decomoji_alias| %>
+        <li>
+          <%= decomoji_alias.name %>
+          -
+          <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), data: {
+            turbo_method: :delete,
+          } %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
 
-<h4>エイリアスを追加する</h4>
-<%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
+  <h4>エイリアスを追加する</h4>
+  <%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
+</turbo-frame>
 
 <hr>
 
-<h3>タグ</h3>
-<% if @decomoji.tags.empty? %>
-  <p>タグはありません。</p>
-<% else %>
-  <ul>
-    <% @decomoji.tags.each do |tag| %>
-      <li>
-        <%= link_to tag.name, root_path(search: "tag:#{tag.name}") %>
-        -
-        <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), data: {
-          turbo_method: :delete,
-        } %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+<turbo-frame id="tags">
+  <h3>タグ</h3>
+  <% if @decomoji.tags.empty? %>
+    <p>タグはありません。</p>
+  <% else %>
+    <ul>
+      <% @decomoji.tags.each do |tag| %>
+        <li>
+          <%= link_to tag.name, root_path(search: "tag:#{tag.name}") %>
+          -
+          <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), data: {
+            turbo_method: :delete,
+          } %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
 
-<h4>タグを追加する</h4>
-<%= form_with url: add_tag_decomoji_path(@decomoji), method: :post do |form| %>
-  <p>
-    <%= form.label :tag_name, 'タグ' %>
-    <%= text_field_tag :tag_name, nil, required: true, list: 'tag-list' %>
-    <%= form.submit '追加する' %>
-  </p>
+  <h4>タグを追加する</h4>
+  <%= form_with url: add_tag_decomoji_path(@decomoji), method: :post do |form| %>
+    <p>
+      <%= form.label :tag_name, 'タグ' %>
+      <%= text_field_tag :tag_name, nil, required: true, list: 'tag-list' %>
+      <%= form.submit '追加する' %>
+    </p>
 
-  <datalist id="tag-list">
-    <% @all_tags.each do |tag| %>
-      <option value="<%= tag.name %>">
-    <% end %>
-  </datalist>
-<% end %>
+    <datalist id="tag-list">
+      <% @all_tags.each do |tag| %>
+        <option value="<%= tag.name %>">
+      <% end %>
+    </datalist>
+  <% end %>
+</turbo-frame>
