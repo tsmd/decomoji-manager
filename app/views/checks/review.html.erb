@@ -1,0 +1,80 @@
+<h2 style="text-align: center">( <%= @count - @unchecked_checks.size + 1 %> / <%= @count %> )</h2>
+
+<% if @target_check.present? %>
+  <div class="review">
+    <p class="review-decomoji" style="--decomoji-color: <%= @target_check.decomoji.color&.hex || '#000' %>">
+      <span>
+        <% if @target_check.decomoji.image.attached? %>
+          <%= image_tag @target_check.decomoji.image, width: 128, height: 128, alt: '' %>
+        <% else %>
+          <span class="review-na"></span>
+        <% end %>
+      </span>
+      <span>
+        <%= render 'decomojis/decomoji_figure', decomoji: @target_check.decomoji, size: 128 %>
+      </span>
+    </p>
+    <p class="review-yomi">
+      <%= @target_check.decomoji.yomi.presence || '(none)' %>
+    </p>
+    <%= form_with model: [@check, @target_check] do |form| %>
+      <p class="review-decision">
+        <%= form.button '問題あり', name: 'status', value: 'problem' %>
+        <%= form.button 'OK', name: 'status', value: 'ok' %>
+      </p>
+    <% end %>
+    <table class="review-detail">
+      <tr>
+        <th scope="row">エイリアス</th>
+        <td><%= @target_check.decomoji.aliases.map(&:name).join(', ').presence || '(none)' %></td>
+      </tr>
+      <tr>
+        <th scope="row">タグ</th>
+        <td><%= @target_check.decomoji.tags.map(&:name).join(', ').presence || '(none)' %></td>
+      </tr>
+    </table>
+  </div>
+<% end %>
+
+<hr>
+
+<details>
+  <summary><h3 style="display: inline">未チェック (<%= @unchecked_checks.size - 1 %>)</h3></summary>
+  <% if @unchecked_checks.empty? %>
+    <p>未チェックのデコモジはありません。</p>
+  <% else %>
+    <ul class="check-decomojis">
+      <% @unchecked_checks[1..].each do |decomoji_check| %>
+        <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+      <% end %>
+    </ul>
+  <% end %>
+</details>
+
+<div class="check-table">
+  <div>
+    <h3>問題あり (<%= @problem_checks.size %>)</h3>
+    <% if @problem_checks.empty? %>
+      <p>問題のあるデコモジはありません。</p>
+    <% else %>
+      <ul class="check-decomojis">
+        <% @problem_checks.each do |decomoji_check| %>
+          <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+
+  <div>
+    <h3>チェック済み (<%= @ok_checks.size %>)</h3>
+    <% if @ok_checks.empty? %>
+      <p>チェック済みのデコモジはありません。</p>
+    <% else %>
+      <ul class="check-decomojis">
+        <% @ok_checks.each do |decomoji_check| %>
+          <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>

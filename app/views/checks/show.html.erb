@@ -1,0 +1,52 @@
+<h2>[<%= @check.status %>] <%= @check.name %></h2>
+
+<% if @check.status == 'completed' %>
+  <p>チェックは完了しています✅</p>
+<% else %>
+  <%= link_to 'チェックを開始する', review_check_path(@check) %>
+<% end %>
+
+<hr>
+
+<details>
+  <summary><h3 style="display: inline">未チェック (<%= @unchecked_checks.size %>)</h3></summary>
+  <ul class="check-decomojis">
+    <% @unchecked_checks.each do |decomoji_check| %>
+    <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+    <% end %>
+  </ul>
+</details>
+
+<div class="check-table">
+  <div>
+    <h3>問題あり (<%= @problem_checks.size %>)</h3>
+    <% if @problem_checks.empty? %>
+      <p>問題のあるデコモジはありません。</p>
+    <% else %>
+      <ul class="check-decomojis">
+        <% @problem_checks.each do |decomoji_check| %>
+          <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+        <% end %>
+      </ul>
+      <form action="<%= new_check_path %>" method="get">
+        <% @problem_checks.each do |decomoji_check| %>
+          <input type="hidden" name="ids[]" value="<%= decomoji_check.decomoji.id %>">
+        <% end %>
+        <input type="submit" value="再チェックを始める">
+      </form>
+    <% end %>
+  </div>
+
+  <div>
+    <h3>チェック済み (<%= @ok_checks.size %>)</h3>
+    <% if @ok_checks.empty? %>
+      <p>チェック済みのデコモジはありません。</p>
+    <% else %>
+      <ul class="check-decomojis">
+        <% @ok_checks.each do |decomoji_check| %>
+          <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>

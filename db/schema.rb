@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_23_054714) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_26_150836) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,11 +47,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_23_054714) do
     t.index ["decomoji_id"], name: "index_aliases_on_decomoji_id"
   end
 
+  create_table "checks", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "status", default: "in_progress", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "colors", force: :cascade do |t|
     t.string "name"
     t.string "hex"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "decomoji_checks", force: :cascade do |t|
+    t.integer "decomoji_id", null: false
+    t.integer "check_id", null: false
+    t.string "status", default: "unchecked", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["check_id"], name: "index_decomoji_checks_on_check_id"
+    t.index ["decomoji_id"], name: "index_decomoji_checks_on_decomoji_id"
   end
 
   create_table "decomoji_tags", force: :cascade do |t|
@@ -94,6 +111,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_23_054714) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aliases", "decomojis"
+  add_foreign_key "decomoji_checks", "checks"
+  add_foreign_key "decomoji_checks", "decomojis"
   add_foreign_key "decomoji_tags", "decomojis"
   add_foreign_key "decomoji_tags", "tags"
   add_foreign_key "decomojis", "colors", on_delete: :nullify

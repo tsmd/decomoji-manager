@@ -21,6 +21,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :checks do
+    resources :decomoji_checks, only: [:update]
+
+    member do
+      get 'review'
+    end
+  end
+
   resources :tags, except: [:new, :show]
 
   resources :versions, except: [:new, :show]

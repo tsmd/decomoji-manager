@@ -1,0 +1,5 @@
+<li class="check-decomoji" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
+  <%= link_to decomoji do %>
+    <%= render 'decomojis/decomoji_figure', decomoji: decomoji %>
+  <% end %>
+</li>

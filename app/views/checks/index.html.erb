@@ -1,0 +1,20 @@
+<h2>チェック一覧</h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>チェック名</th>
+    <th>状態</th>
+    <th>作成日</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @checks.each do |check| %>
+      <tr>
+        <td><%= link_to check.name, check_path(check) %></td>
+        <td><%= check.status %></td>
+        <td><%= check.created_at.to_formatted_s %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

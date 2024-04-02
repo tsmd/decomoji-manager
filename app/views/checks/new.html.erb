@@ -1,0 +1,18 @@
+<h2>チェックを作成</h2>
+
+<%= form_with model: @check, url: checks_path do |form| %>
+  <p class="field">
+    <%= form.label :name, "チェック名" %>
+    <%= form.text_field :name, required: true %>
+    <%= form.submit "作成" %>
+  </p>
+
+  <% @decomoji_ids.each do |decomoji_id| %>
+    <%= hidden_field_tag 'ids[]', decomoji_id %>
+  <% end %>
+
+  <p><%= @decomoji_ids.size %>件のデコモジを選択中</p>
+  <% @decomojis.each do |decomoji| %>
+    <%= render 'decomojis/decomoji_figure', decomoji: decomoji %>
+  <% end %>
+<% end %>
