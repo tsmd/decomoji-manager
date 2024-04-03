@@ -1,6 +1,6 @@
 <turbo-frame id="new-bulk-add-tag">
-  <h2><%= number_with_delimiter @ids.size %>個のデコモジにタグを追加する</h2>
-  <%= form_with url: bulk_add_tag_index_path, method: 'post', html: { 'data-turbo-frame': '_top' } do |form| %>
+  <h2 class="mt-4 mb-4"><%= number_with_delimiter @ids.size %>個のデコモジにタグを追加する</h2>
+  <%= form_with url: bulk_add_tag_index_path, method: 'post', html: { class: 'mt-4', 'data-turbo-frame': '_top' } do |form| %>
     <% @ids.each do |id| %>
       <input type="hidden" name="ids[]" value="<%= id %>">
     <% end %>

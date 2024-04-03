@@ -1,7 +1,7 @@
 <%= form_with model: [ decomoji, decomoji_alias ] do |f| %>
   <%= f.label :name, 'エイリアス' %>
   <% decomoji_alias.errors.full_messages_for(:name).each do |message| %>
-    <div style="color: red"><%= message %></div>
+    <div class="text-red-600"><%= message %></div>
   <% end %>
   <%= f.text_field :name, required: 'required' %>
   <%= f.submit '追加する' %>

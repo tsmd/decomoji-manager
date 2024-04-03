@@ -1,4 +1,4 @@
-<li class="check-decomoji" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
+<li class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-2" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
   <%= link_to decomoji do %>
     <%= render 'decomojis/decomoji_figure', decomoji: decomoji %>
   <% end %>

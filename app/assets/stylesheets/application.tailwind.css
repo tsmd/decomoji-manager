@@ -2,12 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
+@layer base {
+  html {
+    --font-sans-serif: HiraKakuProN-W6, sans-serif;
+    --font-serif: MatissePro-B, HiraMinProN-W6, serif;
+    --font-latin: Helvetica, sans-serif;
 
-@layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
+    font-size: 125%;
+    font-family: sans-serif;
+  }
+
+  button,
+  input[type="submit"] {
+    border: 1px solid;
+    border-radius: 0;
+    background-color: #fff;
+    padding: 0.25rem 0.5rem;
+  }
+
+  input[type="text"],
+  input[type="search"] {
+    border: 1px solid;
+    border-radius: 0;
+    padding: 0.25rem 0.5rem;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  hr {
+    margin-block: 4rem;
+    border: 0;
+    border-top: 1px solid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+  }
+
+  :any-link {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.1em;
   }
 }
 
-*/
+.pagination {
+  display: flex;
+  width: calc(2em * 13);
+  align-items: baseline;
+}
+.pagination .page {
+  width: 2em;
+  text-align: center;
+}
+.pagination .page a {
+  display: block;
+  padding-block: 0.3em;
+}
+.pagination .active {
+  outline: 1px solid;
+}
+.pagination .gap {
+  margin-inline: auto;
+}
+
+.decomojis:has(:checked) .decomoji:has(:checked) {
+  outline: 2px solid var(--decomoji-color);
+  border-color: var(--decomoji-color);
+}

@@ -1,35 +1,40 @@
-<h2 style="text-align: center">( <%= @count - @unchecked_checks.size + 1 %> / <%= @count %> )</h2>
+<h2 class="mt-12 mb-4 text-center">( <%= @count - @unchecked_checks.size + 1 %> / <%= @count %> )</h2>
 
 <% if @target_check.present? %>
-  <div class="review">
-    <p class="review-decomoji" style="--decomoji-color: <%= @target_check.decomoji.color&.hex || '#000' %>">
-      <span>
+  <div class="flex flex-col items-center gap-y-4">
+    <p class="flex gap-x-4" style="--decomoji-color: <%= @target_check.decomoji.color&.hex || '#000' %>">
+      <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
         <% if @target_check.decomoji.image.attached? %>
-          <%= image_tag @target_check.decomoji.image, width: 128, height: 128, alt: '' %>
+          <%= image_tag @target_check.decomoji.image, class: 'w-32 h-32 [image-rendering:crisp-edges]', width: 128, height: 128, alt: '' %>
         <% else %>
-          <span class="review-na"></span>
+          <span class="relative inline-block w-32 h-32 align-bottom border border-[color:--decomoji-color]" role="img" aria-label="N/A">
+            <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit rotate-45"></span>
+            <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit -rotate-45"></span>
+          </span>
         <% end %>
       </span>
-      <span>
-        <%= render 'decomojis/decomoji_figure', decomoji: @target_check.decomoji, size: 128 %>
+      <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
+        <span class="block w-32 h-32">
+          <%= render 'decomojis/decomoji_figure', decomoji: @target_check.decomoji %>
+        </span>
       </span>
     </p>
-    <p class="review-yomi">
+    <p class="text-2xl">
       <%= @target_check.decomoji.yomi.presence || '(none)' %>
     </p>
     <%= form_with model: [@check, @target_check] do |form| %>
-      <p class="review-decision">
-        <%= form.button '問題あり', name: 'status', value: 'problem' %>
-        <%= form.button 'OK', name: 'status', value: 'ok' %>
+      <p class="flex gap-x-4">
+        <%= form.button '問題あり', class: 'w-24', name: 'status', value: 'problem' %>
+        <%= form.button 'OK', class: 'w-24', name: 'status', value: 'ok' %>
       </p>
     <% end %>
-    <table class="review-detail">
+    <table>
       <tr>
-        <th scope="row">エイリアス</th>
+        <th class="pr-4 text-right" scope="row">エイリアス</th>
         <td><%= @target_check.decomoji.aliases.map(&:name).join(', ').presence || '(none)' %></td>
       </tr>
       <tr>
-        <th scope="row">タグ</th>
+        <th class="pr-4 text-right" scope="row">タグ</th>
         <td><%= @target_check.decomoji.tags.map(&:name).join(', ').presence || '(none)' %></td>
       </tr>
     </table>
@@ -39,11 +44,11 @@
 <hr>
 
 <details>
-  <summary><h3 style="display: inline">未チェック (<%= @unchecked_checks.size - 1 %>)</h3></summary>
+  <summary><h3 class="inline">未チェック (<%= @unchecked_checks.size - 1 %>)</h3></summary>
   <% if @unchecked_checks.empty? %>
     <p>未チェックのデコモジはありません。</p>
   <% else %>
-    <ul class="check-decomojis">
+    <ul class="grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
       <% @unchecked_checks[1..].each do |decomoji_check| %>
         <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
       <% end %>
@@ -51,13 +56,15 @@
   <% end %>
 </details>
 
-<div class="check-table">
+<div class="h-8"></div>
+
+<div class="check-table grid grid-cols-[repeat(auto-fit,minmax(12em,1fr))] gap-8">
   <div>
     <h3>問題あり (<%= @problem_checks.size %>)</h3>
     <% if @problem_checks.empty? %>
       <p>問題のあるデコモジはありません。</p>
     <% else %>
-      <ul class="check-decomojis">
+      <ul class="grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
         <% @problem_checks.each do |decomoji_check| %>
           <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
         <% end %>
@@ -66,11 +73,11 @@
   </div>
 
   <div>
-    <h3>チェック済み (<%= @ok_checks.size %>)</h3>
+    <h3 class="mb-4">チェック済み (<%= @ok_checks.size %>)</h3>
     <% if @ok_checks.empty? %>
       <p>チェック済みのデコモジはありません。</p>
     <% else %>
-      <ul class="check-decomojis">
+      <ul class="grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
         <% @ok_checks.each do |decomoji_check| %>
           <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
         <% end %>

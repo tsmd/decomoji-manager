@@ -1,15 +1,15 @@
-<h2>バージョン</h2>
+<h2 class="mt-12 mb-4">バージョン</h2>
 
 <%= form_with model: @new_version, local: true do |form| %>
-  <div style="margin-block: 1em">
+  <div class="my-4">
     <div><%= form.label :name %></div>
     <% @new_version.errors.full_messages_for(:name).each do |message| %>
-      <div style="color: red"><%= message %></div>
+      <div class="text-red-600"><%= message %></div>
     <% end %>
     <%= form.text_field :name, required: 'required' %>
   </div>
 
-  <div style="margin-block: 1em">
+  <div class="my-4">
     <%= form.submit '追加する' %>
   </div>
 <% end %>
@@ -21,7 +21,7 @@
         <%= link_to version.name, root_path(search: "version:#{version.name}"), target: '_top' %>
         -
         <%= link_to '編集', edit_version_path(version) %>
-        <%= link_to '削除', version, data: {
+        <%= link_to '削除', version, class: 'text-red-600', data: {
           turbo_frame: '_top',
           turbo_method: :delete,
           turbo_confirm: "バージョン「#{version.name}」を本当に削除しますか？",

@@ -1,6 +1,8 @@
-<h2>デコモジ</h2>
+<h2 class="mt-12 mb-4">デコモジ</h2>
 
-<p><%= link_to 'デコモジを追加する', new_decomoji_path %></p>
+<p class="mt-4"><%= link_to 'デコモジを追加する', new_decomoji_path %></p>
+
+<div class="h-4"></div>
 
 <form action="<%= root_path %>">
   <p>
@@ -9,6 +11,8 @@
     <input type="submit" value="検索">
   </p>
 </form>
+
+<div class="h-4"></div>
 
 <% if @decomojis.empty? %>
   <p>条件に合うデコモジがありません</p>
@@ -20,20 +24,22 @@
     <%= link_to 'TSV', decomojis_path(format: :tsv, search: params[:search]) %>
   </p>
 
-  <nav aria-label="ページング">
+  <div class="mt-4">
     <p>
       <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
     </p>
-    <p>
+    <p class="mt-4">
       <%= pagy_info_with_comma(@pagy) %>
     </p>
-  </nav>
+  </div>
 
-  <%= form_with class: 'decomojis-form', data: {
+  <div class="h-4"></div>
+
+  <%= form_with class: 'group/decomojis', data: {
     controller: 'enhanced-checkbox',
     action: 'click->enhanced-checkbox#memoShiftKey change->enhanced-checkbox#handleCheck',
   } do %>
-    <div class="bulk-edit">
+    <div class="fixed top-0 inset-x-0 bottom-auto z-10 hidden flex-wrap items-baseline gap-2 border-b border-black bg-white p-2 group-has-[:checked]/decomojis:flex">
       選択したものを
       <button
         type="submit"
@@ -44,7 +50,6 @@
         data-invoker-target-value="bulk-add-tag"
         data-action="click->invoker#invoke"
       >
-        <%# invoketarget="bulk-add-tag" %>
         まとめてタグ付け
       </button>
       <button type="submit" formaction="<%= new_check_path %>" formmethod="get">
@@ -52,16 +57,17 @@
       </button>
       <button type="reset">選択解除</button>
 
-      <dialog id="bulk-add-tag" data-controller="dialog" data-action="invoker:invoke->dialog#showModal">
-        <button type="button" data-action="dialog#close">閉じる</button>
+      <dialog id="bulk-add-tag" class="relative p-8" data-controller="dialog" data-action="invoker:invoke->dialog#showModal">
+        <button class="mb-4" type="button" data-action="dialog#close">閉じる</button>
         <turbo-frame id="new-bulk-add-tag" loading="lazy"></turbo-frame>
       </dialog>
     </div>
-    <ul class="decomojis">
+    <ul class="decomojis grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4">
       <% @decomojis.each do |decomoji| %>
-      <li class="decomoji" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
-        <label>
+      <li class="decomoji group/decomoji relative z-0 aspect-square border-2 border-transparent bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] bg-origin-border select-none" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
+        <label class="absolute top-0 left-0 p-1 group-has-[:checked]/decomojis:inset-0">
           <input
+            class="block opacity-0 accent-[--decomoji-color] focus:opacity-100 group-has-[:checked]/decomojis:opacity-100 group-hover/decomoji:opacity-100"
             type="checkbox"
             name="ids[]"
             value="<%= decomoji.id %>"
@@ -69,7 +75,7 @@
             data-enhanced-checkbox-target="checkbox"
           >
         </label>
-        <%= link_to decomoji do %>
+        <%= link_to decomoji, class: 'block p-2' do %>
           <%= render 'decomoji_figure', decomoji: decomoji %>
         <% end %>
       </li>
@@ -77,10 +83,14 @@
     </ul>
   <% end %>
 
-  <p>
-    <%= pagy_info_with_comma(@pagy) %>
-  </p>
-  <p>
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
-  </p>
+  <div class="h-4"></div>
+
+  <div>
+    <p>
+      <%= pagy_info_with_comma(@pagy) %>
+    </p>
+    <p class="mt-4">
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </p>
+  </div>
 <% end %>

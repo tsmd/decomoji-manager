@@ -6,15 +6,15 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%#= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <header id="header">
+  <body class="m-2">
+    <header class="mb-16 flex flex-wrap justify-between items-baseline gap-x-8 gap-y-4">
       <h1><%= link_to "デコモジマネージャー", root_path %></h1>
       <nav aria-label="サイトナビゲーション">
-        <ul>
+        <ul class="flex items-baseline gap-4">
           <li><%= link_to "デコモジ", root_path %></li>
           <li><%= link_to "タグ", tags_path %></li>
           <li><%= link_to "バージョン", versions_path %></li>

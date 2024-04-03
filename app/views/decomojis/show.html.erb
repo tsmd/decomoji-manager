@@ -1,44 +1,44 @@
-<h2>
+<h2 class="mt-12 mb-4">
   <%= @decomoji.name %>
   <% if @decomoji.version.present? %>
     (<%= @decomoji.version.name %>)
   <% end %>
 </h2>
 
-<% if @decomoji.image.attached? %>
-  <p><%= image_tag @decomoji.image, width: 64, height: 64, alt: '' %></p>
-<% end %>
-
-<p>よみがな：<%= @decomoji.yomi %></p>
-
-<p>フォント：<%= @decomoji.font %></p>
-
-<p>組版：<%= @decomoji.typesetting.presence || '（なし）' %></p>
-
-<p>色：
-  <% if @decomoji.color.present? %>
-    <span style="display:inline-block;width:16px;height:16px;background-color:<%= @decomoji.color.hex %>"></span>
-    <%= @decomoji.color.name %>
-  <% else %>
-    （指定無し）
-  <% end %>
-</p>
-
-<h3>アクション</h3>
-<ul>
-  <li><%= link_to '編集', edit_decomoji_path(@decomoji) %></li>
-  <li>
-    <%= link_to '削除', decomoji_path(@decomoji), data: {
+<div class="flex flex-col items-center gap-y-4">
+  <p class="flex gap-x-4" style="--decomoji-color: <%= @decomoji.color&.hex || '#000' %>">
+    <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
+      <% if @decomoji.image.attached? %>
+        <%= image_tag @decomoji.image, class: 'w-32 h-32 [image-rendering:crisp-edges]', width: 128, height: 128, alt: '' %>
+      <% else %>
+        <span class="relative inline-block w-32 h-32 align-bottom border border-[color:--decomoji-color]" role="img" aria-label="N/A">
+          <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit rotate-45"></span>
+          <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit -rotate-45"></span>
+        </span>
+      <% end %>
+    </span>
+    <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
+      <span class="block w-32 h-32">
+        <%= render 'decomojis/decomoji_figure', decomoji: @decomoji %>
+      </span>
+    </span>
+  </p>
+  <p class="text-2xl">
+    <%= @decomoji.yomi.presence || '(none)' %>
+  </p>
+  <p class="flex gap-4">
+    <%= link_to '編集', edit_decomoji_path(@decomoji) %>
+    <%= link_to '削除', decomoji_path(@decomoji), class: 'text-red-600', data: {
       turbo_method: :delete,
       turbo_confirm: "デコモジ「#{@decomoji.name}」を削除しますか？"
     } %>
-  </li>
-</ul>
+  </p>
+</div>
 
 <hr>
 
 <turbo-frame id="aliases">
-  <h3>エイリアス</h3>
+  <h3 class="mt-8 mb-2">エイリアス</h3>
   <% if @decomoji.aliases.empty? %>
     <p>エイリアスはありません。</p>
   <% else %>
@@ -47,22 +47,23 @@
         <li>
           <%= decomoji_alias.name %>
           -
-          <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), data: {
+          <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), class: 'text-red-600', data: {
             turbo_method: :delete,
+            turbo_confirm: "エイリアス「#{decomoji_alias.name}」を削除しますか？"
           } %>
         </li>
       <% end %>
     </ul>
   <% end %>
 
-  <h4>エイリアスを追加する</h4>
+  <h4 class="mt-8 mb-2">エイリアスを追加する</h4>
   <%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
 </turbo-frame>
 
 <hr>
 
 <turbo-frame id="tags">
-  <h3>タグ</h3>
+  <h3 class="mt-8 mb-2">タグ</h3>
   <% if @decomoji.tags.empty? %>
     <p>タグはありません。</p>
   <% else %>
@@ -71,15 +72,16 @@
         <li>
           <%= link_to tag.name, root_path(search: "tag:#{tag.name}") %>
           -
-          <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), data: {
+          <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), class: 'text-red-600', data: {
             turbo_method: :delete,
+            turbo_confirm: "タグ「#{tag.name}」を削除しますか？"
           } %>
         </li>
       <% end %>
     </ul>
   <% end %>
 
-  <h4>タグを追加する</h4>
+  <h4 class="mt-8 mb-2">タグを追加する</h4>
   <%= form_with url: add_tag_decomoji_path(@decomoji), method: :post do |form| %>
     <p>
       <%= form.label :tag_name, 'タグ' %>

@@ -1,4 +1,4 @@
-<h2>[<%= @check.status %>] <%= @check.name %></h2>
+<h2 class="mt-12 mb-4">[<%= @check.status %>] <%= @check.name %></h2>
 
 <% if @check.status == 'completed' %>
   <p>チェックは完了しています✅</p>
@@ -9,26 +9,28 @@
 <hr>
 
 <details>
-  <summary><h3 style="display: inline">未チェック (<%= @unchecked_checks.size %>)</h3></summary>
-  <ul class="check-decomojis">
+  <summary><h3 class="inline">未チェック (<%= @unchecked_checks.size %>)</h3></summary>
+  <ul class="grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
     <% @unchecked_checks.each do |decomoji_check| %>
-    <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
+      <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
     <% end %>
   </ul>
 </details>
 
-<div class="check-table">
+<div class="h-8"></div>
+
+<div class="check-table grid grid-cols-[repeat(auto-fit,minmax(12em,1fr))] gap-8">
   <div>
-    <h3>問題あり (<%= @problem_checks.size %>)</h3>
+    <h3 class="mb-4">問題あり (<%= @problem_checks.size %>)</h3>
     <% if @problem_checks.empty? %>
       <p>問題のあるデコモジはありません。</p>
     <% else %>
-      <ul class="check-decomojis">
+      <ul class="grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
         <% @problem_checks.each do |decomoji_check| %>
           <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
         <% end %>
       </ul>
-      <form action="<%= new_check_path %>" method="get">
+      <form class="mt-4" action="<%= new_check_path %>" method="get">
         <% @problem_checks.each do |decomoji_check| %>
           <input type="hidden" name="ids[]" value="<%= decomoji_check.decomoji.id %>">
         <% end %>
@@ -38,11 +40,11 @@
   </div>
 
   <div>
-    <h3>チェック済み (<%= @ok_checks.size %>)</h3>
+    <h3 class="mb-4">チェック済み (<%= @ok_checks.size %>)</h3>
     <% if @ok_checks.empty? %>
       <p>チェック済みのデコモジはありません。</p>
     <% else %>
-      <ul class="check-decomojis">
+      <ul class="grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
         <% @ok_checks.each do |decomoji_check| %>
           <%= render 'decomoji', decomoji: decomoji_check.decomoji %>
         <% end %>

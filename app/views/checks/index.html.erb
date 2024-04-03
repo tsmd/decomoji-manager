@@ -1,19 +1,19 @@
-<h2>チェック一覧</h2>
+<h2 class="mt-12 mb-4">チェック</h2>
 
-<table>
+<table class="border-collapse">
   <thead>
-  <tr>
-    <th>チェック名</th>
-    <th>状態</th>
-    <th>作成日</th>
+  <tr class="border-b border-black">
+    <th class="p-4 pl-0 text-left">チェック名</th>
+    <th class="p-4 text-left">状態</th>
+    <th class="p-4 pr-0 text-left">作成日</th>
   </tr>
   </thead>
   <tbody>
     <% @checks.each do |check| %>
-      <tr>
-        <td><%= link_to check.name, check_path(check) %></td>
-        <td><%= check.status %></td>
-        <td><%= check.created_at.to_formatted_s %></td>
+      <tr class="border-b border-black">
+        <td class="p-4 pl-0"><%= link_to check.name, check_path(check) %></td>
+        <td class="p-4"><%= check.status %></td>
+        <td class="p-4 pr-0"><%= check.created_at.to_formatted_s %></td>
       </tr>
     <% end %>
   </tbody>
