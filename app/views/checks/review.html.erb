@@ -1,3 +1,5 @@
+<% content_for(:html_title) { "チェック：[#{@check.status}] #{@check.name}" } %>
+
 <h2 class="mt-12 mb-4 text-center">( <%= @count - @unchecked_checks.size + 1 %> / <%= @count %> )</h2>
 
 <% if @target_check.present? %>

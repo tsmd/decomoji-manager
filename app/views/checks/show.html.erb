@@ -1,3 +1,5 @@
+<% content_for(:html_title) { "[#{@check.status}] #{@check.name}" } %>
+
 <h2 class="mt-12 mb-4">[<%= @check.status %>] <%= @check.name %></h2>
 
 <% if @check.status == 'completed' %>

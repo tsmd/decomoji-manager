@@ -1,3 +1,5 @@
+<% content_for(:html_title) { @decomoji.name } %>
+
 <h2 class="mt-12 mb-4">
   <%= @decomoji.name %>
   <% if @decomoji.version.present? %>
