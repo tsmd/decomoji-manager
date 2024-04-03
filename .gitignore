@@ -37,3 +37,6 @@
 /.idea/
 
 /db/decomoji/*.png
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
