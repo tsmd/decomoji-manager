@@ -11,7 +11,7 @@ class Decomoji < ApplicationRecord
 
   has_many :aliases, dependent: :destroy
 
-  has_many :decomoji_tags
+  has_many :decomoji_tags, dependent: :destroy
   has_many :tags, through: :decomoji_tags
 
   has_one_attached :image
@@ -20,7 +20,7 @@ class Decomoji < ApplicationRecord
 
   before_save :replace_image, if: -> { image.attached? && image.changed? }
 
-  has_many :decomoji_checks
+  has_many :decomoji_checks, dependent: :destroy
   has_many :checks, through: :decomoji_checks
 
   def yomi_kunrei
