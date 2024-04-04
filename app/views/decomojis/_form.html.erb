@@ -62,7 +62,7 @@
     <% decomoji.errors.full_messages_for(:color).each do |message| %>
     <div class="text-red-600"><%= message %></div>
     <% end %>
-    <label><%= f.radio_button :color_id, '' %> 指定なし</label>
+    <label><%= f.radio_button :color_id, '' %> 指定なし（自動ローテーション）</label>
     <div class="grid grid-cols-[repeat(auto-fill,minmax(8em,1fr))]">
       <% Color.all.each do |color| %>
         <label>

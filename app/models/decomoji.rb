@@ -6,6 +6,7 @@ class Decomoji < ApplicationRecord
   #validates :yomi, presence: true, length: { minimum: 1 }
 
   belongs_to :color, optional: true
+  before_create :assign_default_color, if: -> { color_id.blank? }
 
   belongs_to :version, optional: true
 
@@ -29,6 +30,19 @@ class Decomoji < ApplicationRecord
 
   def yomi_hepburn
     yomi.present? ? to_hepburn_romaji(yomi) : ''
+  end
+
+  # デフォルトの色を設定
+
+  def assign_default_color
+    last_color_id = Decomoji.last&.color_id
+    self.color_id = last_color_id ? next_color_id(last_color_id) : Color.first.id
+  end
+
+  def next_color_id(current_color_id)
+    current_position = Color.order(:id).find_index { |color| color.id == current_color_id }
+    next_position = (current_position + 1) % Color.count
+    Color.order(:id).offset(next_position).first.id
   end
 
   # SVGレンダリング関連
