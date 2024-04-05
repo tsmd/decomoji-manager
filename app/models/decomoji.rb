@@ -11,6 +11,7 @@ class Decomoji < ApplicationRecord
   belongs_to :version, optional: true
 
   has_many :aliases, dependent: :destroy
+  after_create :add_romaji_aliases
 
   has_many :decomoji_tags, dependent: :destroy
   has_many :tags, through: :decomoji_tags
@@ -171,13 +172,16 @@ class Decomoji < ApplicationRecord
     length
   end
 
-  # ASCII 文字を含むかどうか判定
-  def has_ascii_string?(string)
-    !!string.match(/[!-~]/)
-  end
+  def add_romaji_aliases
+    kunrei = yomi_kunrei
+    hepburn = yomi_hepburn
 
-  # 非ASCII文字を含むかどうか判定
-  def has_non_ascii_string?(string)
-    !!string.match(/[^!-~]/)
+    if hepburn != kunrei && !aliases.exists?(name: kunrei)
+      aliases.create(name: kunrei)
+    end
+
+    if !aliases.exists?(name: hepburn)
+      aliases.create(name: hepburn)
+    end
   end
 end
