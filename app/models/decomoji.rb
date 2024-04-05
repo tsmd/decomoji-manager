@@ -33,17 +33,29 @@ class Decomoji < ApplicationRecord
     yomi.present? ? to_hepburn_romaji(yomi) : ''
   end
 
+  def self.default_font(name)
+    return 'latin' unless self.has_non_ascii_string?(name)
+    return 'serif' if name.size <= 2
+    'sans-serif'
+  end
+
   # デフォルトの色を設定
 
   def assign_default_color
     last_color_id = Decomoji.last&.color_id
-    self.color_id = last_color_id ? next_color_id(last_color_id) : Color.first.id
+    self.color_id = last_color_id ? Decomoji.next_color_id(last_color_id) : Color.first.id
   end
 
-  def next_color_id(current_color_id)
-    current_position = Color.order(:id).find_index { |color| color.id == current_color_id }
-    next_position = (current_position + 1) % Color.count
-    Color.order(:id).offset(next_position).first.id
+  def self.next_color_id(current_color_id)
+    colors = Color.order(:id).to_a
+    current_index = colors.index { |color| color.id == current_color_id }
+
+    if current_index.nil?
+      return colors[0].id
+    end
+
+    next_index = (current_index + 1) % colors.size
+    colors[next_index].id
   end
 
   # SVGレンダリング関連
@@ -63,7 +75,7 @@ class Decomoji < ApplicationRecord
         next
       end
       last_char = split.last[-1]
-      if has_non_ascii_string?(last_char) || has_non_ascii_string?(fragment)
+      if Decomoji.has_non_ascii_string?(last_char) || Decomoji.has_non_ascii_string?(fragment)
         split.push(fragment)
       else
         split[-1] += fragment
@@ -91,7 +103,7 @@ class Decomoji < ApplicationRecord
   def orientation
     orientation = :horizontal
     unless raw_text.include?(' ')
-      if split_text.length == 2 && !split_text.any? { |s| has_ascii_string?(s) }
+      if split_text.length == 2 && !split_text.any? { |s| Decomoji.has_ascii_string?(s) }
         orientation = :vertical
       end
     end
@@ -101,7 +113,7 @@ class Decomoji < ApplicationRecord
   def font_size
     return @font_size if defined? @font_size
     if orientation == :horizontal
-      if lines.size == 1 && !has_non_ascii_string?(lines[0])
+      if lines.size == 1 && !Decomoji.has_non_ascii_string?(lines[0])
         font_size = VIEWBOX_SIZE / 2
       else
         font_size = VIEWBOX_SIZE / lines.size
@@ -141,6 +153,16 @@ class Decomoji < ApplicationRecord
     row += tags.limit(3).pluck(:name).tap { |t| t.fill('', t.size..2) }
     row += [color&.name, font, version&.name]
     row
+  end
+
+  # ASCII 文字を含むかどうか判定
+  def self.has_ascii_string?(string)
+    !!string.match(/[!-~]/)
+  end
+
+  # 非ASCII文字を含むかどうか判定
+  def self.has_non_ascii_string?(string)
+    !!string.match(/[^!-~]/)
   end
 
   private

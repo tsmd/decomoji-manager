@@ -1,0 +1,16 @@
+<% content_for(:html_title) { "バッチ登録" } %>
+
+<h2 class="mt-12 mb-4">バッチ登録</h2>
+
+<%= form_with url: confirm_batches_path, data: { turbo: 'false' } do |f| %>
+  <div class="my-4">
+    <div><%= f.label :decomojis, 'デコモジ（必須）' %></div>
+    <div class="ml-16 text-xs">
+      <p>1行につき1デコモジ</p>
+      <p>ヘッダー行を省略したタブ区切りテキスト（TSV）形式</p>
+      <p>1列目:名前／2列目:ひらがな読み</p>
+    </div>
+    <%= f.text_area :decomojis, required: 'required', placeholder: "あけおめ\tあけおめ\nアゲリシャス\tあげりしゃす\n安全第一\tあんぜんだいいち\n", class: 'w-96 h-80' %>
+  </div>
+  <p><%= f.submit '確認する' %></p>
+<% end %>

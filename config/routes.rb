@@ -21,6 +21,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :batches, only: [:new, :create] do
+    collection do
+      post 'confirm'
+    end
+  end
+
   resources :checks do
     resources :decomoji_checks, only: [:update]
 

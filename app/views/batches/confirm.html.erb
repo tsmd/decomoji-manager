@@ -1,0 +1,37 @@
+<% content_for(:html_title) { (@errors.any? ? "エラー：" : "") + "バッチ登録の確認" } %>
+
+<h2 class="mt-12 mb-4">バッチ登録の確認</h2>
+
+<% if @errors.any? %>
+  <div class="my-8">
+    <h3>エラーがあります</h3>
+    <p>バッチ登録から除外します</p>
+    <ul class="mt-2">
+      <% @errors.each do |error| %>
+        <% error[:errors].each do |message| %>
+          <li class="text-red-600"><strong><%= error[:name] %></strong>: <%= message %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with url: batches_path, class: 'my-8' do |f| %>
+  <h3>以下のデコモジを登録します</h3>
+  <% if @decomojis.any? %>
+    <ul class="mt-2 grid grid-cols-[repeat(auto-fill,4rem)] gap-2">
+      <% @decomojis.each do |decomoji| %>
+        <li class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-2" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
+          <input type="hidden" name="decomojis[][name]" value="<%= decomoji.name %>">
+          <input type="hidden" name="decomojis[][yomi]" value="<%= decomoji.yomi %>">
+          <input type="hidden" name="decomojis[][font]" value="<%= decomoji.font %>">
+          <input type="hidden" name="decomojis[][color_id]" value="<%= decomoji.color_id %>">
+          <%= render 'decomojis/decomoji_figure', decomoji: decomoji %>
+        </li>
+      <% end %>
+    </ul>
+    <p class="mt-4"><%= f.submit "#{@decomojis.length}件のデコモジを登録" %></p>
+  <% else %>
+    <p>登録できるデコモジがありません</p>
+  <% end %>
+<% end %>
