@@ -3,7 +3,7 @@ class Decomoji < ApplicationRecord
 
   validates :name, presence: true, length: { minimum: 1 }, uniqueness: true
 
-  #validates :yomi, presence: true, length: { minimum: 1 }
+  validates :yomi, presence: true, length: { minimum: 1 }
 
   belongs_to :color, optional: true
   before_create :assign_default_color, if: -> { color_id.blank? }

@@ -3,7 +3,7 @@
     <h3>確認してください</h3>
     <ul>
     <% decomoji.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
+      <li class="text-red-600"><%= message %></li>
     <% end %>
     </ul>
   </div>
@@ -19,11 +19,11 @@
   </div>
 
   <div class="my-4">
-    <div><%= f.label :yomi, 'よみがな' %></div>
+    <div><%= f.label :yomi, 'よみがな（必須）' %></div>
     <% decomoji.errors.full_messages_for(:yomi).each do |message| %>
       <div class="text-red-600"><%= message %></div>
     <% end %>
-    <%= f.text_field :yomi %>
+    <%= f.text_field :yomi, required: 'required' %>
   </div>
 
   <div class="my-4">
