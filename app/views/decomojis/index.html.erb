@@ -38,7 +38,7 @@
 
   <div class="h-4"></div>
 
-  <%= form_with class: 'group/decomojis', data: {
+  <%= form_with method: :get,  class: 'group/decomojis', data: {
     controller: 'enhanced-checkbox',
     action: 'click->enhanced-checkbox#memoShiftKey change->enhanced-checkbox#handleCheck',
   } do %>
@@ -47,7 +47,6 @@
       <button
         type="submit"
         formaction="<%= new_bulk_add_tag_path %>"
-        formmethod="get"
         data-turbo-frame="new-bulk-add-tag"
         data-controller="invoker"
         data-invoker-target-value="bulk-add-tag"
@@ -55,7 +54,7 @@
       >
         まとめてタグ付け
       </button>
-      <button type="submit" formaction="<%= new_check_path %>" formmethod="get">
+      <button type="submit" formaction="<%= new_check_path %>">
         チェックを作成
       </button>
       <button type="reset">選択解除</button>
