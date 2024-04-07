@@ -22,7 +22,7 @@
       <%= turbo_frame_tag tag do %>
         <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
         -
-        <%= link_to '編集', edit_tag_path(tag) %>
+        <%= link_to '編集', edit_tag_path(tag), autofocus: flash[:tag_updated] == tag.id %>
         <%= link_to '削除', tag, class: 'text-red-600', data: {
           turbo_frame: '_top',
           turbo_method: :delete,

@@ -2,7 +2,7 @@
 
 <%= turbo_frame_tag @tag do %>
   <%= form_with model: @tag, html: { style: 'display: inline' } do |form| %>
-    <%= form.text_field :name, required: 'required' %>
+    <%= form.text_field :name, required: 'required', autofocus: @turbo_frame_request %>
     <%= form.submit '更新' %>
   <% end %>
 
