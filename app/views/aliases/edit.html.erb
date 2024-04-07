@@ -1,0 +1,10 @@
+<h2 class="mt-12 mb-4">エイリアスを編集する</h2>
+
+<%= turbo_frame_tag @alias do %>
+  <%= form_with model: [@alias.decomoji, @alias], class: 'inline' do |form| %>
+    <%= form.text_field :name, required: 'required' %>
+    <%= form.submit '更新' %>
+  <% end %>
+
+  <%= link_to 'キャンセル', decomoji_path(@alias.decomoji) %>
+<% end %>

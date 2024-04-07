@@ -19,7 +19,7 @@
 <ul>
   <% @tags.each do |tag| %>
     <li>
-      <turbo-frame id="tag_<%= tag.id %>">
+      <%= turbo_frame_tag tag do %>
         <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
         -
         <%= link_to '編集', edit_tag_path(tag) %>
@@ -28,7 +28,7 @@
           turbo_method: :delete,
           turbo_confirm: "タグ「#{tag.name}」を本当に削除しますか？",
         } %>
-      </turbo-frame>
+      <% end %>
     </li>
   <% end %>
 </ul>

@@ -47,12 +47,15 @@
     <ul>
       <% @decomoji.aliases.each do |decomoji_alias| %>
         <li>
-          <%= decomoji_alias.name %>
-          -
-          <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), class: 'text-red-600', data: {
-            turbo_method: :delete,
-            turbo_confirm: "エイリアス「#{decomoji_alias.name}」を削除しますか？"
-          } %>
+          <%= turbo_frame_tag decomoji_alias do %>
+            <%= decomoji_alias.name %>
+            -
+            <%= link_to '編集', edit_decomoji_alias_path(@decomoji, decomoji_alias) %>
+            <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), class: 'text-red-600', data: {
+              turbo_method: :delete,
+              turbo_confirm: "エイリアス「#{decomoji_alias.name}」を削除しますか？"
+            } %>
+          <% end %>
         </li>
       <% end %>
     </ul>
@@ -72,7 +75,7 @@
     <ul>
       <% @decomoji.tags.each do |tag| %>
         <li>
-          <%= link_to tag.name, root_path(search: "tag:#{tag.name}") %>
+          <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
           -
           <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), class: 'text-red-600', data: {
             turbo_method: :delete,

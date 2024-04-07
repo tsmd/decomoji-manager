@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   root "decomojis#index"
 
   resources :decomojis do
-    resources :aliases, only: [:create, :destroy]
+    resources :aliases, except: [:index, :new, :show]
 
     collection do
       resources :bulk_add_tag, only: [:new, :create]

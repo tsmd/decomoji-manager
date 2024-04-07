@@ -15,6 +15,19 @@ class AliasesController < ApplicationController
     end
   end
 
+  def edit
+    @alias = Alias.find(params[:id])
+  end
+
+  def update
+    @alias = Alias.find(params[:id])
+    if @alias.update(alias_params)
+      redirect_to decomoji_path @alias.decomoji
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @alias = Alias.find(params[:id])
     @decomoji = @alias.decomoji
