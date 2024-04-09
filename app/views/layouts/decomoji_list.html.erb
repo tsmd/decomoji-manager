@@ -1,0 +1,90 @@
+<% content_for :main do %>
+  <h2 class="mt-12 mb-4">デコモジ</h2>
+
+  <div class="mt-4">
+    <p><%= link_to 'デコモジを追加する', new_decomoji_path %></p>
+    <p><%= link_to 'デコモジをまとめて追加する', new_batch_path %></p>
+  </div>
+
+  <div class="h-4"></div>
+
+  <form action="<%= root_path %>">
+    <p>
+      <label for="search">検索</label>
+      <input type="text" name="search" value="<%= params[:search] %>" id="search">
+      <input type="submit" value="検索">
+    </p>
+  </form>
+
+  <div class="h-4"></div>
+
+  <% if @decomojis.empty? %>
+    <p>条件に合うデコモジがありません</p>
+  <% else %>
+    <p>
+      他フォーマット：
+      <%= link_to 'JSON', decomojis_path(format: :json, search: params[:search]) %>
+      <%= link_to 'CSV', decomojis_path(format: :csv, search: params[:search]) %>
+      <%= link_to 'TSV', decomojis_path(format: :tsv, search: params[:search]) %>
+    </p>
+
+    <div class="mt-4">
+      <p>
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+      </p>
+      <p class="mt-4">
+        <%= pagy_info_with_comma(@pagy) %>
+        <span class="ml-4 inline-flex gap-x-2">
+          <%= link_to 'グリッド', grid_path(search: params[:search], page: params[:page]) %>
+          <%= link_to 'リスト', list_path(search: params[:search], page: params[:page]) %>
+        </span>
+      </p>
+    </div>
+
+    <div class="h-4"></div>
+
+    <%= form_with method: :get,  class: 'group/decomojis', data: {
+      controller: 'enhanced-checkbox',
+      action: 'click->enhanced-checkbox#memoShiftKey change->enhanced-checkbox#handleCheck',
+    } do %>
+      <div class="fixed top-0 inset-x-0 bottom-auto z-10 hidden flex-wrap items-baseline gap-2 border-b border-black bg-white p-2 group-has-[:checked]/decomojis:flex">
+        選択したものを
+        <button
+          type="submit"
+          formaction="<%= new_bulk_add_tag_path %>"
+          data-turbo-frame="new-bulk-add-tag"
+          data-controller="invoker"
+          data-invoker-target-value="bulk-add-tag"
+          data-action="click->invoker#invoke"
+        >
+          まとめてタグ付け
+        </button>
+        <button type="submit" formaction="<%= new_check_path %>">
+          チェックを作成
+        </button>
+        <button type="reset">選択解除</button>
+
+        <dialog id="bulk-add-tag" class="relative p-8" data-controller="dialog" data-action="invoker:invoke->dialog#showModal">
+          <button class="mb-4" type="button" data-action="dialog#close">閉じる</button>
+          <turbo-frame id="new-bulk-add-tag" loading="lazy"></turbo-frame>
+        </dialog>
+      </div>
+
+      <%= yield %>
+
+    <% end %>
+
+  <div class="h-4"></div>
+
+  <div>
+    <p>
+      <%= pagy_info_with_comma(@pagy) %>
+    </p>
+    <p class="mt-4">
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </p>
+  </div>
+  <% end %>
+<% end %>
+
+<%= render template: 'layouts/application' %>

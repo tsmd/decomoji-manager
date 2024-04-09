@@ -1,0 +1,49 @@
+  <table class="table-fixed border-collapse text-xs">
+    <colgroup>
+      <col>
+      <col class="w-40" span="2">
+      <col class="w-64" span="2">
+      <col>
+      <col>
+    </colgroup>
+    <thead>
+      <tr class="border-b border-black">
+        <th class="font-normal text-left" scope="col"></th>
+        <th class="font-normal text-left" scope="col">name</th>
+        <th class="font-normal text-left" scope="col">yomi</th>
+        <th class="font-normal text-left" scope="col">aliases</th>
+        <th class="font-normal text-left" scope="col">tags</th>
+        <th class="font-normal text-left" scope="col">color</th>
+        <th class="font-normal text-left" scope="col">version</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @decomojis.each do |decomoji| %>
+        <tr class="even:bg-gray-100">
+          <td class="py-1">
+            <input
+              class="accent-[--decomoji-color]"
+              type="checkbox"
+              name="ids[]"
+              value="<%= decomoji.id %>"
+              aria-labelledby="decomoji-<%= decomoji.id %>"
+              data-enhanced-checkbox-target="checkbox"
+            >
+          </td>
+          <th class="font-normal text-left" scope="row">
+            <div class="flex items-center">
+              <span class="flex shrink-0 w-4 h-4 mr-1">
+                <%= render 'decomoji_figure', decomoji: decomoji %>
+              </span>
+              <span class="grow w-0 truncate"><%= link_to decomoji.name, decomoji %></span>
+            </div>
+          </th>
+          <td><div class="flex"><span class="grow w-0 truncate"><%= decomoji.yomi %></span></div></td>
+          <td><div class="flex"><span class="grow w-0 truncate"><%= decomoji.aliases.pluck(:name).join(', ') %></span></div></td>
+          <td><div class="flex"><span class="grow w-0 truncate"><%= decomoji.tags.pluck(:name).join(', ') %></span></div></td>
+          <td><%= decomoji.color&.name %></td>
+          <td><%= decomoji.version&.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

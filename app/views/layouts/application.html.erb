@@ -23,6 +23,6 @@
         </ul>
       </nav>
     </header>
-    <%= yield %>
+    <%= content_for?(:main) ? yield(:main) : yield %>
   </body>
 </html>

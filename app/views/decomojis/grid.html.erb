@@ -1,0 +1,19 @@
+  <ul class="decomojis grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4">
+    <% @decomojis.each do |decomoji| %>
+    <li class="decomoji group/decomoji relative z-0 aspect-square border-2 border-transparent bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] bg-origin-border select-none" style="--decomoji-color: <%= decomoji.color&.hex || '#000' %>">
+      <label class="absolute top-0 left-0 p-1 group-has-[:checked]/decomojis:inset-0">
+        <input
+          class="block opacity-0 accent-[--decomoji-color] focus:opacity-100 group-has-[:checked]/decomojis:opacity-100 group-hover/decomoji:opacity-100"
+          type="checkbox"
+          name="ids[]"
+          value="<%= decomoji.id %>"
+          aria-labelledby="decomoji-<%= decomoji.id %>"
+          data-enhanced-checkbox-target="checkbox"
+        >
+      </label>
+      <%= link_to decomoji, class: 'block p-2' do %>
+        <%= render 'decomoji_figure', decomoji: decomoji %>
+      <% end %>
+    </li>
+    <% end %>
+  </ul>

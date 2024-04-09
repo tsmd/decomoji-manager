@@ -5,17 +5,19 @@ class DecomojisController < ApplicationController
   include Pagy::Backend
 
   def index
-    search_result = search_decomojis(params[:search])
-
     respond_to do |format|
       format.html do
-        @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
-        @count = search_result.count
+        if session[:display_mode] == 'list'
+          redirect_to list_path(search: params[:search], page: params[:page])
+        else
+          redirect_to grid_path(search: params[:search], page: params[:page])
+        end
       end
 
       format.json do
         response.headers['Content-Type'] = 'application/json; charset=utf-8'
         response.stream.write '['
+        search_result = search_decomojis(params[:search])
         search_result.find_each.with_index do |decomoji, i|
           response.stream.write ',' unless i.zero?
           response.stream.write decomoji.as_json.to_json
@@ -27,6 +29,7 @@ class DecomojisController < ApplicationController
       format.csv do
         response.headers['Content-Type'] = 'text/csv; charset=utf-8'
         response.stream.write CSV.generate_line(Decomoji.row_header)
+        search_result = search_decomojis(params[:search])
         search_result.find_each do |decomoji|
           response.stream.write CSV.generate_line(decomoji.as_row)
         end
@@ -36,12 +39,33 @@ class DecomojisController < ApplicationController
       format.tsv do
         response.headers['Content-Type'] = 'text/tab-separated-values; charset=utf-8'
         response.stream.write CSV.generate_line(Decomoji.row_header, col_sep: "\t")
+        search_result = search_decomojis(params[:search])
         search_result.find_each do |decomoji|
           response.stream.write CSV.generate_line(decomoji.as_row, col_sep: "\t")
         end
         response.stream.close
       end
     end
+  end
+
+  def grid
+    search_result = search_decomojis(params[:search])
+    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
+    @count = search_result.count
+
+    session[:display_mode] = 'grid'
+
+    render layout: 'decomoji_list'
+  end
+
+  def list
+    search_result = search_decomojis(params[:search])
+    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
+    @count = search_result.count
+
+    session[:display_mode] = 'list'
+
+    render layout: 'decomoji_list'
   end
 
   def search_decomojis(search)

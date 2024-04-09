@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "decomojis#index"
 
+  get 'grid', controller: :decomojis
+  get 'list', controller: :decomojis
+
   resources :decomojis do
     resources :aliases, except: [:index, :new, :show]
 
