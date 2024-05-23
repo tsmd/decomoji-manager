@@ -50,7 +50,7 @@ class DecomojisController < ApplicationController
 
   def grid
     search_result = search_decomojis(params[:search])
-    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
+    @pagy, @decomojis = pagy(search_result, items: 500, size: [1, 3, 3, 1])
     @count = search_result.count
 
     session[:display_mode] = 'grid'
@@ -60,7 +60,7 @@ class DecomojisController < ApplicationController
 
   def list
     search_result = search_decomojis(params[:search])
-    @pagy, @decomojis = pagy(search_result, items: 1000, size: [1, 3, 3, 1])
+    @pagy, @decomojis = pagy(search_result, items: 500, size: [1, 3, 3, 1])
     @count = search_result.count
 
     session[:display_mode] = 'list'
