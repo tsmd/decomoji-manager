@@ -39,65 +39,65 @@
 
 <hr>
 
-<turbo-frame id="aliases">
-  <h3 class="mt-8 mb-2">エイリアス</h3>
-  <% if @decomoji.aliases.empty? %>
-    <p>エイリアスはありません。</p>
-  <% else %>
-    <ul>
-      <% @decomoji.aliases.each do |decomoji_alias| %>
-        <li>
-          <%= turbo_frame_tag decomoji_alias do %>
-            <%= decomoji_alias.name %>
+<div class="flex flex-wrap gap-8">
+  <turbo-frame id="aliases">
+    <h3 class="mt-8 mb-2">エイリアス</h3>
+    <% if @decomoji.aliases.empty? %>
+      <p>エイリアスはありません。</p>
+    <% else %>
+      <ul>
+        <% @decomoji.aliases.each do |decomoji_alias| %>
+          <li>
+            <%= turbo_frame_tag decomoji_alias do %>
+              <%= decomoji_alias.name %>
+              -
+              <%= link_to '編集', edit_decomoji_alias_path(@decomoji, decomoji_alias) %>
+              <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), class: 'text-red-600', data: {
+                turbo_method: :delete,
+                turbo_confirm: "エイリアス「#{decomoji_alias.name}」を削除しますか？"
+              } %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <h4 class="mt-8 mb-2">エイリアスを追加する</h4>
+    <%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
+  </turbo-frame>
+
+  <turbo-frame id="tags">
+    <h3 class="mt-8 mb-2">タグ</h3>
+    <% if @decomoji.tags.empty? %>
+      <p>タグはありません。</p>
+    <% else %>
+      <ul>
+        <% @decomoji.tags.each do |tag| %>
+          <li>
+            <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
             -
-            <%= link_to '編集', edit_decomoji_alias_path(@decomoji, decomoji_alias) %>
-            <%= link_to '削除', decomoji_alias_path(@decomoji, decomoji_alias), class: 'text-red-600', data: {
+            <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), class: 'text-red-600', data: {
               turbo_method: :delete,
-              turbo_confirm: "エイリアス「#{decomoji_alias.name}」を削除しますか？"
+              turbo_confirm: "タグ「#{tag.name}」を削除しますか？"
             } %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
 
-  <h4 class="mt-8 mb-2">エイリアスを追加する</h4>
-  <%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
-</turbo-frame>
+    <h4 class="mt-8 mb-2">タグを追加する</h4>
+    <%= form_with url: add_tag_decomoji_path(@decomoji), method: :post do |form| %>
+      <p>
+        <%= form.label :tag_name, 'タグ' %>
+        <%= text_field_tag :tag_name, nil, required: true, list: 'tag-list' %>
+        <%= form.submit '追加する' %>
+      </p>
 
-<hr>
-
-<turbo-frame id="tags">
-  <h3 class="mt-8 mb-2">タグ</h3>
-  <% if @decomoji.tags.empty? %>
-    <p>タグはありません。</p>
-  <% else %>
-    <ul>
-      <% @decomoji.tags.each do |tag| %>
-        <li>
-          <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
-          -
-          <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), class: 'text-red-600', data: {
-            turbo_method: :delete,
-            turbo_confirm: "タグ「#{tag.name}」を削除しますか？"
-          } %>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <h4 class="mt-8 mb-2">タグを追加する</h4>
-  <%= form_with url: add_tag_decomoji_path(@decomoji), method: :post do |form| %>
-    <p>
-      <%= form.label :tag_name, 'タグ' %>
-      <%= text_field_tag :tag_name, nil, required: true, list: 'tag-list' %>
-      <%= form.submit '追加する' %>
-    </p>
-
-    <datalist id="tag-list">
-      <% @all_tags.each do |tag| %>
-        <option value="<%= tag.name %>">
-      <% end %>
-    </datalist>
-  <% end %>
-</turbo-frame>
+      <datalist id="tag-list">
+        <% @all_tags.each do |tag| %>
+          <option value="<%= tag.name %>">
+        <% end %>
+      </datalist>
+    <% end %>
+  </turbo-frame>
+</div>
