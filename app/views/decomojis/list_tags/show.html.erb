@@ -1,0 +1,14 @@
+<% content_for(:html_title) { "タグ一覧「#{@decomoji.name}」" } %>
+
+<h2 class="mt-12 mb-4">
+  タグ一覧「<%= @decomoji.name %>」
+</h2>
+
+<turbo-frame id="decomoji-<%= @decomoji.id %>-tags" class="block">
+  <ul class="flex flex-wrap items-baseline gap-1">
+    <% @decomoji.tags.each do |tag| %>
+      <li class="border border-black rounded px-1"><%= tag.name %></li>
+    <% end %>
+    <li><%= link_to '追加', edit_decomoji_list_tags_path(@decomoji), autofocus: @turbo_frame_request %></li>
+  </ul>
+</turbo-frame>

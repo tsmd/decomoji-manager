@@ -30,7 +30,7 @@
               data-enhanced-checkbox-target="checkbox"
             >
           </td>
-          <th class="font-normal text-left" scope="row">
+          <th class="py-1 font-normal text-left" scope="row">
             <div class="flex items-center">
               <span class="flex shrink-0 w-4 h-4 mr-1">
                 <%= render 'decomoji_figure', decomoji: decomoji %>
@@ -38,11 +38,20 @@
               <span class="grow w-0 truncate"><%= link_to decomoji.name, decomoji %></span>
             </div>
           </th>
-          <td><div class="flex"><span class="grow w-0 truncate"><%= decomoji.yomi %></span></div></td>
-          <td><div class="flex"><span class="grow w-0 truncate"><%= decomoji.aliases.pluck(:name).join(', ') %></span></div></td>
-          <td><div class="flex"><span class="grow w-0 truncate"><%= decomoji.tags.pluck(:name).join(', ') %></span></div></td>
-          <td><%= decomoji.color&.name %></td>
-          <td><%= decomoji.version&.name %></td>
+          <td class="py-1"><div class="flex"><span class="grow w-0 truncate"><%= decomoji.yomi %></span></div></td>
+          <td class="py-1"><div class="flex"><span class="grow w-0 truncate"><%= decomoji.aliases.pluck(:name).join(', ') %></span></div></td>
+          <td class="py-1">
+            <turbo-frame id="decomoji-<%= decomoji.id %>-tags" class="block">
+              <ul class="flex flex-wrap items-baseline gap-1">
+                <% decomoji.tags.each do |tag| %>
+                  <li class="border border-black rounded px-1"><%= tag.name %></li>
+                <% end %>
+                <li><%= link_to '追加', edit_decomoji_list_tags_path(decomoji) %></li>
+              </ul>
+            </turbo-frame>
+          </td>
+          <td class="py-1"><%= decomoji.color&.name %></td>
+          <td class="py-1"><%= decomoji.version&.name %></td>
         </tr>
       <% end %>
     </tbody>

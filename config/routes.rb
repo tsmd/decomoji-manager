@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       post 'add_tag'
       delete 'remove_tag/:tag_id', to: 'decomojis#remove_tag', as: 'remove_tag'
     end
+
+    resource :list_tags, only: [:show, :edit, :update], controller: 'decomojis/list_tags'
   end
 
   resources :batches, only: [:new, :create] do

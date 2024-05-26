@@ -1,0 +1,27 @@
+<% content_for(:html_title) { "タグを追加「#{@decomoji.name}」" } %>
+
+<h2 class="mt-12 mb-4">
+  タグを追加「<%= @decomoji.name %>」
+</h2>
+
+<turbo-frame id="decomoji-<%= @decomoji.id %>-tags" class="block">
+  <%= form_with url: decomoji_list_tags_path(@decomoji), method: :put, data: {
+    controller: 'key anchor',
+    action: 'keydown->key#handle key:esc->anchor#click',
+  } do |form| %>
+    <ul class="flex flex-wrap items-baseline gap-1">
+      <% @decomoji.tags.each do |tag| %>
+        <li class="border border-black rounded px-1"><%= tag.name %></li>
+      <% end %>
+      <li>
+        <%= form.text_field :tags, autofocus: true, size: 4, list: "tag-list-#{@decomoji.id}", class: 'min-w-8 !rounded !p-0 !px-1 bg-transparent', autocomplete: 'off', style: 'field-sizing:content' %>
+        <%= link_to 'キャンセル', decomoji_list_tags_path(@decomoji), class: 'hidden', data: { anchor_target: 'anchor' } %>
+        <datalist id="tag-list-<%= @decomoji.id %>">
+          <% @all_tags.each do |tag| %>
+            <option value="<%= tag.name %>">
+          <% end %>
+        </datalist>
+      </li>
+    </ul>
+  <% end %>
+</turbo-frame>
