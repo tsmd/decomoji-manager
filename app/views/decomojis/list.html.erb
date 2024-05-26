@@ -46,7 +46,7 @@
                 <% decomoji.tags.each do |tag| %>
                   <li class="border border-black rounded px-1"><%= tag.name %></li>
                 <% end %>
-                <li><%= link_to '追加', edit_decomoji_list_tags_path(decomoji) %></li>
+                <li><%= link_to '編集', edit_decomoji_list_tags_path(decomoji) %></li>
               </ul>
             </turbo-frame>
           </td>
