@@ -5,13 +5,22 @@
 </h2>
 
 <turbo-frame id="decomoji-<%= @decomoji.id %>-tags" class="block">
-  <%= form_with url: decomoji_list_tags_path(@decomoji), method: :put, data: {
+  <%= form_with url: decomoji_list_tags_path(@decomoji), method: :post, data: {
     controller: 'key anchor',
     action: 'keydown->key#handle key:esc->anchor#click',
   } do |form| %>
     <ul class="flex flex-wrap items-baseline gap-1">
       <% @decomoji.tags.each do |tag| %>
-        <li class="border border-black rounded px-1"><%= tag.name %></li>
+        <li class="relative border border-black rounded px-1">
+          <%= tag.name %>
+          <%= link_to decomoji_list_tag_path(@decomoji, id: tag.id), class: 'absolute -top-3 -right-1 w-4 h-4 border border-black rounded-full p-0 bg-white', aria: { label: "タグ「#{tag.name}」を削除" }, data: {
+            turbo_method: :delete,
+            turbo_confirm: "タグ「#{tag.name}」を削除しますか？"
+          } do %>
+            <span class="absolute inset-0 m-auto w-2 h-0.5 border-t-2 border-black rotate-45"></span>
+            <span class="absolute inset-0 m-auto w-2 h-0.5 border-t-2 border-black -rotate-45"></span>
+          <% end %>
+        </li>
       <% end %>
       <li>
         <%= form.text_field :tags, autofocus: true, size: 4, list: "tag-list-#{@decomoji.id}", class: 'min-w-8 !rounded !p-0 !px-1 bg-transparent', autocomplete: 'off', style: 'field-sizing:content' %>
