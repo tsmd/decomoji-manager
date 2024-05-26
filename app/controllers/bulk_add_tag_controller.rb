@@ -1,6 +1,6 @@
 class BulkAddTagController < ApplicationController
   def new
-    @ids = params[:ids]
+    @ids = params[:ids] || []
     @all_tags = Tag.order(:name)
   end
 

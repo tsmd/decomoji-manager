@@ -63,12 +63,12 @@
           チェックを作成
         </button>
         <button type="reset">選択解除</button>
-
-        <dialog id="bulk-add-tag" class="relative p-8" data-controller="dialog" data-action="invoker:invoke->dialog#showModal">
-          <button class="mb-4" type="button" data-action="dialog#close">閉じる</button>
-          <turbo-frame id="new-bulk-add-tag" loading="lazy"></turbo-frame>
-        </dialog>
       </div>
+
+      <dialog id="bulk-add-tag" class="relative p-8" data-controller="dialog" data-action="invoker:invoke->dialog#showModal">
+        <button class="mb-4" type="button" data-action="dialog#close">閉じる</button>
+        <turbo-frame id="new-bulk-add-tag" loading="lazy"></turbo-frame>
+      </dialog>
 
       <%= yield %>
 
