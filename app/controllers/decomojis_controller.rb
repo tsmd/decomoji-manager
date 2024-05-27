@@ -94,7 +94,7 @@ class DecomojisController < ApplicationController
 
   def show
     @decomoji = Decomoji.find(params[:id])
-    @all_tags = Tag.where.not(id: @decomoji.tags.select(:id)).order(:name)
+    @all_tags = Tag.order(:name)
   end
 
   def new

@@ -23,6 +23,8 @@ Rails.application.routes.draw do
       delete 'remove_tag/:tag_id', to: 'decomojis#remove_tag', as: 'remove_tag'
     end
 
+    resource :tags, only: [:update], controller: 'decomojis/tags'
+
     resource :list_tags, only: [:show, :edit, :create], controller: 'decomojis/list_tags'
     resources :list_tags, only: [:destroy], controller: 'decomojis/list_tags'
   end

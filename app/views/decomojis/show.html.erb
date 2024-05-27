@@ -66,20 +66,20 @@
     <%= render 'aliases/form', decomoji: @decomoji, decomoji_alias: @decomoji.aliases.build %>
   </turbo-frame>
 
-  <turbo-frame id="tags">
-    <h3 class="mt-8 mb-2">タグ</h3>
-    <% if @decomoji.tags.empty? %>
-      <p>タグはありません。</p>
-    <% else %>
+  <turbo-frame id="tags" refresh="morph">
+    <%= form_with url: decomoji_tags_path(@decomoji), method: :put, data: {
+      controller: 'form',
+      form_target: 'form',
+      action: 'change->form#requestSubmit',
+    } do |form| %>
+      <h3 class="mt-8 mb-2">タグ</h3>
       <ul>
-        <% @decomoji.tags.each do |tag| %>
+        <% @all_tags.each do |tag| %>
           <li>
-            <%= link_to tag.name, root_path(search: "tag:#{tag.name}"), target: '_top' %>
-            -
-            <%= link_to '削除', remove_tag_decomoji_path(@decomoji, tag_id: tag.id), class: 'text-red-600', data: {
-              turbo_method: :delete,
-              turbo_confirm: "タグ「#{tag.name}」を削除しますか？"
-            } %>
+            <label>
+              <%= check_box_tag 'tag_ids[]', tag.id, @decomoji.tags.include?(tag), id: "tag_#{tag.id}" %>
+              <%= tag.name %>
+            </label>
           </li>
         <% end %>
       </ul>
