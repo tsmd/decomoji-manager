@@ -1,40 +1,56 @@
 <% content_for(:html_title) { @decomoji.name } %>
 
-<h2 class="mt-12 mb-4">
+<h2 class="mt-12 mb-4 text-center">
   <%= @decomoji.name %>
   <% if @decomoji.version.present? %>
     (<%= @decomoji.version.name %>)
   <% end %>
 </h2>
 
-<div class="flex flex-col items-center gap-y-4">
-  <p class="flex gap-x-4" style="--decomoji-color: <%= @decomoji.color&.hex || '#000' %>">
-    <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
-      <% if @decomoji.image.attached? %>
-        <%= image_tag @decomoji.image, class: 'w-32 h-32 [image-rendering:crisp-edges]', width: 128, height: 128, alt: '' %>
-      <% else %>
-        <span class="relative inline-block w-32 h-32 align-bottom border border-[color:--decomoji-color]" role="img" aria-label="N/A">
-          <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit rotate-45"></span>
-          <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit -rotate-45"></span>
-        </span>
-      <% end %>
-    </span>
-    <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
-      <span class="block w-32 h-32">
-        <%= render 'decomojis/decomoji_figure', decomoji: @decomoji %>
+<div class="grid grid-cols-[auto_1fr_auto] gap-8">
+  <div class="col-start-2 row-start-1 flex flex-col items-center gap-y-4">
+    <p class="flex gap-x-4" style="--decomoji-color: <%= @decomoji.color&.hex || '#000' %>">
+      <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
+        <% if @decomoji.image.attached? %>
+          <%= image_tag @decomoji.image, class: 'w-32 h-32 [image-rendering:crisp-edges]', width: 128, height: 128, alt: '' %>
+        <% else %>
+          <span class="relative inline-block w-32 h-32 align-bottom border border-[color:--decomoji-color]" role="img" aria-label="N/A">
+            <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit rotate-45"></span>
+            <span class="absolute inset-0 m-auto w-0 h-[141.42%] border-r border-inherit -rotate-45"></span>
+          </span>
+        <% end %>
       </span>
-    </span>
-  </p>
-  <p class="text-2xl">
-    <%= @decomoji.yomi.presence || '(none)' %>
-  </p>
-  <p class="flex gap-4">
-    <%= link_to '編集', edit_decomoji_path(@decomoji) %>
-    <%= link_to '削除', decomoji_path(@decomoji), class: 'text-red-600', data: {
-      turbo_method: :delete,
-      turbo_confirm: "デコモジ「#{@decomoji.name}」を削除しますか？"
-    } %>
-  </p>
+      <span class="bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-4">
+        <span class="block w-32 h-32">
+          <%= render 'decomojis/decomoji_figure', decomoji: @decomoji %>
+        </span>
+      </span>
+    </p>
+    <p class="text-2xl">
+      <%= @decomoji.yomi.presence || '(none)' %>
+    </p>
+    <p class="flex gap-4">
+      <%= link_to '編集', edit_decomoji_path(@decomoji) %>
+      <%= link_to '削除', decomoji_path(@decomoji), class: 'text-red-600', data: {
+        turbo_method: :delete,
+        turbo_confirm: "デコモジ「#{@decomoji.name}」を削除しますか？"
+      } %>
+    </p>
+  </div>
+  <div class="col-start-1 row-start-1 self-end">
+    <% if @previous_decomoji %>
+      <%= link_to decomoji_path(@previous_decomoji), class: 'inline-block w-10 h-10 bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-1', style:"--decomoji-color: #{@previous_decomoji.color&.hex || '#000'}" do %>
+        <%= render 'decomojis/decomoji_figure', decomoji: @previous_decomoji %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col-start-3 row-start-1 self-end">
+    <% if @next_decomoji %>
+      <%= link_to decomoji_path(@next_decomoji), class: 'inline-block w-10 h-10 bg-[color-mix(in_srgb,var(--decomoji-color),#fff_95%)] p-1', style:"--decomoji-color: #{@next_decomoji.color&.hex || '#000'}" do %>
+        <%= render 'decomojis/decomoji_figure', decomoji: @next_decomoji %>
+      <% end %>
+    <% end %>
+  </div>
 </div>
 
 <hr>

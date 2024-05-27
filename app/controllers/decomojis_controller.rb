@@ -95,6 +95,8 @@ class DecomojisController < ApplicationController
   def show
     @decomoji = Decomoji.find(params[:id])
     @all_tags = Tag.order(:name)
+    @previous_decomoji = Decomoji.where("id < ?", @decomoji.id).order(id: :desc).first
+    @next_decomoji = Decomoji.where("id > ?", @decomoji.id).order(id: :asc).first
   end
 
   def new

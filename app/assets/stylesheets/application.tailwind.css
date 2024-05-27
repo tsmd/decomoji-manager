@@ -8,6 +8,7 @@
     --font-serif: MatissePro-B, HiraMinProN-W6, serif;
     --font-latin: Helvetica, sans-serif;
 
+    padding-bottom: 50vh;
     font-size: 125%;
     font-family: sans-serif;
   }
