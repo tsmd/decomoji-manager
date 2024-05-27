@@ -16,7 +16,7 @@
   </div>
 <% end %>
   
-<ul>
+<ul class="space-y-2">
   <% @tags.each do |tag| %>
     <li>
       <%= turbo_frame_tag tag do %>
@@ -28,6 +28,9 @@
           turbo_method: :delete,
           turbo_confirm: "タグ「#{tag.name}」を本当に削除しますか？",
         } %>
+        <% if tag.description.present? %>
+          <p class="ml-16 text-xs whitespace-pre-wrap"><%= tag.description %></p>
+        <% end %>
       <% end %>
     </li>
   <% end %>

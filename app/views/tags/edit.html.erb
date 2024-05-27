@@ -2,9 +2,22 @@
 
 <%= turbo_frame_tag @tag do %>
   <%= form_with model: @tag, html: { style: 'display: inline' } do |form| %>
-    <%= form.text_field :name, required: 'required', autofocus: @turbo_frame_request %>
-    <%= form.submit '更新' %>
+    <p>
+      <label>
+        タグ<br>
+        <%= form.text_field :name, required: 'required', autofocus: @turbo_frame_request, class: 'block' %>
+      </label>
+    </p>
+    <p class="mt-2">
+      <label>
+        説明<br>
+        <%= form.text_area :description, rows: 3, style: 'field-sizing: content', class: 'block' %>
+      </label>
+    </p>
+    <p class="mt-2">
+      <%= form.submit '更新' %>
+    </p>
   <% end %>
 
-  <%= link_to 'キャンセル', tags_path %>
+  <p class="mt-1"><%= link_to 'キャンセル', tags_path %></p>
 <% end %>
