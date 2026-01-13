@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RomajiKanaConverterTest < Minitest::Test
   include RomajiKanaConverter
-  
+
   def test_to_hepburn_romaji
     assert_equal 'konnnichiha', to_hepburn_romaji('こんにちは')
     assert_equal 'arigatai_', to_hepburn_romaji('ありがたい！')
@@ -43,7 +43,7 @@ class RomajiKanaConverterTest < Minitest::Test
     assert_equal 'ぎるてぃ', to_kana('giruthi')
     assert_equal '13じしゅっしゃ', to_kana('13zisyussya')
   end
-  
+
   def test_to_kana_adjusted
     assert_equal 'こんにちは', to_kana_adjusted('konnnichiha', '今日は')
     assert_equal 'こんにちは!', to_kana_adjusted('konnnichiha_', '今日は！')
@@ -53,5 +53,19 @@ class RomajiKanaConverterTest < Minitest::Test
     assert_equal 'GENKIもりもりMAXです', to_kana_adjusted('genkimorimorimaxdesu', 'GENKI盛り盛りMAXです')
     assert_equal 'いきはYOIYOIかえりはKOWAI', to_kana_adjusted('ikihayoiyoikaerihakowai', '行きはYOIYOI帰りはKOWAI')
     assert_equal 'うかつあり', to_kana_adjusted('ukatuari', '迂闊あり')
+  end
+
+  def test_to_mixed_romaji
+    assert_equal 'shi-si-tsu-tu-bou', to_mixed_romaji('しつぼう')
+    assert_equal 'ariga-chi-ti', to_mixed_romaji('ありがち')
+    assert_equal 'dou-shi-si-te', to_mixed_romaji('どうして')
+    assert_equal 'ka-jo-zyo-teisei', to_mixed_romaji('かじょていせい')
+    assert_equal 'yokatta', to_mixed_romaji('よかった')
+    assert_equal 'seyakate', to_mixed_romaji('せやかて')
+    assert_equal 'ann-shi-si-nn', to_mixed_romaji('あんしん')
+    assert_equal 'fu-hu-ann', to_mixed_romaji('ふあん')
+    assert_equal 'bu-ji-zi-shi-si-bou', to_mixed_romaji('ぶじしぼう')
+    assert_equal 'lint-tsu-tu-kuro', to_mixed_romaji('lintつくろ')
+    assert_equal 'anocitesuto', to_mixed_romaji('あのCIてすと')
   end
 end

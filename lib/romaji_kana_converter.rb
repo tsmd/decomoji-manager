@@ -108,6 +108,83 @@ module RomajiKanaConverter
     to_romaji(str, KUNREI_1, KUNREI_2, KUNREI_3)
   end
 
+  def to_mixed_romaji(str)
+    # 文字列を正規化
+    # -w, -W: UTF-8
+    # -h1: 片仮名を平仮名に変換する
+    # -Z: X0208 アルファベットといくつかの記号を ASCII に変換する
+    str = NKF.nkf('-w -W -h1 -Z', str).downcase
+
+    parts = []
+    i = 0
+    while i < str.length
+      char = str[i]
+      has_next_char = i + 1 < str.length
+
+      # 拗音の処理（2文字）
+      if has_next_char && HEPBURN_2.key?(str[i..i+1])
+        hepburn = HEPBURN_2[str[i..i+1]]
+        kunrei = KUNREI_2[str[i..i+1]]
+        if hepburn == kunrei
+          parts << { text: hepburn, diff: false }
+        else
+          parts << { text: "#{hepburn}-#{kunrei}", diff: true }
+        end
+        i += 2
+        next
+      end
+
+      # 促音の処理
+      if char == 'っ' && has_next_char && HEPBURN_1.key?(str[i + 1])
+        parts << { text: HEPBURN_1[str[i + 1]][0], diff: false }
+        i += 1
+        next
+      end
+
+      # 1文字の処理
+      if HEPBURN_1.key?(char)
+        hepburn = HEPBURN_1[char]
+        kunrei = KUNREI_1[char]
+        if hepburn == kunrei
+          parts << { text: hepburn, diff: false }
+        else
+          parts << { text: "#{hepburn}-#{kunrei}", diff: true }
+        end
+        i += 1
+        next
+      end
+
+      if HEPBURN_3.key?(char)
+        parts << { text: HEPBURN_3[char], diff: false }
+        i += 1
+        next
+      end
+
+      # 英数字だったらそのまま
+      if char.match?(/[a-zA-Z0-9]/)
+        parts << { text: char, diff: false }
+        i += 1
+        next
+      end
+
+      i += 1
+    end
+
+    # partsを結合する際、差異がある部分の前後にハイフンを入れる
+    result = ''
+    parts.each_with_index do |part, idx|
+      # 前のパートが差異ありの場合、またはこのパートが差異ありで前のパートが差異なしの場合にハイフンを追加
+      if idx > 0
+        prev = parts[idx - 1]
+        if prev[:diff] || part[:diff]
+          result += '-'
+        end
+      end
+      result += part[:text]
+    end
+    result
+  end
+
   def to_kana(romaji)
     pointer = 0
     kana = ''
@@ -134,7 +211,7 @@ module RomajiKanaConverter
       # Move the pointer forward if no match was found
       unless matched
         kana += romaji[pointer]
-        pointer += 1 
+        pointer += 1
       end
     end
 
